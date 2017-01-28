@@ -8,7 +8,7 @@ from .messages import ErrorInvalidJSON, ErrorNonNullableFieldInsert, ErrorPrimar
 def validation(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        fields = model.crud.fields
+        fields = model._meta.fields
 
         # Field names are used to return a nicely formatted list to the user,
         # we remove id because we don't want users using it.
@@ -88,7 +88,7 @@ def validation(func):
 def collection_filter(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        fields = model.crud.fields
+        fields = model._meta.fields
 
         # Field names are used to return a nicely formatted list to the user,
         # we remove id because we don't want users using it.
