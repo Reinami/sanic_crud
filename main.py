@@ -1,6 +1,7 @@
 from sanic import Sanic
+from sanic.log import log
 from model import Person, db
-from sanic_crud import BaseResource, BaseCollectionResource
+from sanic_crud import BaseResource, BaseCollectionResource, generate_crud
 
 class PersonResource(BaseResource):
     model = Person
@@ -12,7 +13,6 @@ class PersonCollectionResource(BaseCollectionResource):
 
 app = Sanic(__name__)
 
-app.add_route(PersonResource.as_view(), '/person/<id:int>')
-app.add_route(PersonCollectionResource.as_view(), '/person')
-
+app.log = log
+generate_crud(app, [Person])
 app.go_fast(host='0.0.0.0', port=8000, debug=True)
