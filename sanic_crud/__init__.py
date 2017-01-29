@@ -1,8 +1,6 @@
-from .collection_resource import BaseCollectionResource
-from .single_resource import BaseResource
 from .crud_generation import generate_crud
-from .crud_config import CrudConfig
+from .crud_config import CrudConfig, ResponseMessages
 
 __version__ = '0.1.0'
 
-__all__ = ['CrudConfig' 'generate_crud']
+__all__ = ['CrudConfig', 'ResponseMessages', 'generate_crud']

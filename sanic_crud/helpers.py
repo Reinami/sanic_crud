@@ -1,9 +1,5 @@
 from datetime import datetime
 from sanic.response import json
-from .messages import ErrorInvalidJSON, ErrorNonNullableFieldInsert, ErrorPrimaryKeyUpdateInsert, ErrorInvalidField, \
-	ErrorFieldOutOfRange, ErrorInvalidFilterOption, FILTER_OPTIONS, ErrorTypeDatetime, ErrorTypeInteger, \
-    ErrorTypeBoolean
-
 
 # Validates request data for a put or a post
 def validation(func):
@@ -15,6 +11,7 @@ def validation(func):
         field_names = config.get_field_names()
         primary_key = config.primary_key
         required_fields = config.required_fields
+        response_messages = config.response_messages
 
         # min/max value size for fields
         field_default_size = {
@@ -33,7 +30,7 @@ def validation(func):
         try:
             request_data = request.json
         except ValueError:
-            return response_json(status_code=400, message=ErrorInvalidJSON)
+            return response_json(status_code=400, message=response_messages.ErrorInvalidJSON)
 
         # Verify all non-nullable fields are present only needs to be done on post
         if request.method == 'POST':
@@ -43,21 +40,21 @@ def validation(func):
                 if not field_obj.null:
                     if field not in request.json or request.json.get(field) is None:
                         return response_json(status_code=400,
-                                             message=ErrorNonNullableFieldInsert.format(field, required_fields))
+                                             message=response_messages.ErrorNonNullableFieldInsert.format(field, required_fields))
 
         # Verify the user is not trying to mess with the primary key
         if primary_key in request_data:
             return response_json(status_code=400,
-                                 message=ErrorPrimaryKeyUpdateInsert)
+                                 message=response_messages.ErrorPrimaryKeyUpdateInsert)
 
         # Verify all of the request_data are valid model fields
         for key in request_data:
             if key not in fields:
-                return response_json(ErrorInvalidField.format(key, field_names))
+                return response_json(response_messages.ErrorInvalidField.format(key, field_names))
 
         # Verify all of the request_data is a valid type for the database
         for key, value in request_data.items():
-            field_type_invalid = _validate_field_type(fields.get(key), value)
+            field_type_invalid = _validate_field_type(model, fields.get(key), value)
             field_type = fields.get(key).db_field
 
             if field_type_invalid:
@@ -70,7 +67,7 @@ def validation(func):
 
                 if not min_size <= value <= max_size:
                     return response_json(status_code=400,
-                                         message=ErrorFieldOutOfRange.format(key, min_size, max_size))
+                                         message=response_messages.ErrorFieldOutOfRange.format(key, min_size, max_size))
             # verify field length
             if field_type in field_default_length:
                 min_length = field_default_length.get(field_type).get('min')
@@ -78,7 +75,7 @@ def validation(func):
 
                 if not min_length <= len(value) <= max_length:
                     return response_json(status_code=400,
-                                         message=ErrorFieldOutOfRange(key, min_length, max_length))
+                                         message=response_messages.ErrorFieldOutOfRange(key, min_length, max_length))
 
         return func(self, request, *args, **kwargs)
 
@@ -92,6 +89,8 @@ def collection_filter(func):
 
         fields = config.fields
         field_names = config.get_field_names()
+        response_messages = config.response_messages
+
         query = model.select()
 
         # Iterate over args and split the filters
@@ -109,14 +108,14 @@ def collection_filter(func):
                 comparison = filter_parts[1]
 
             # Validate that a supported comparison is used
-            if comparison not in FILTER_OPTIONS:
+            if comparison not in config.FILTER_OPTIONS:
                 return response_json(status_code=400,
-                                     message=ErrorInvalidFilterOption.format(comparison, FILTER_OPTIONS))
+                                     message=response_messages.ErrorInvalidFilterOption.format(comparison, config.FILTER_OPTIONS))
 
             # Validate that the field is part of the table
             if field not in fields:
                 return response_json(status_code=400,
-                                     message=ErrorInvalidField.format(key, field_names))
+                                     message=response_messages.ErrorInvalidField.format(key, field_names))
 
             # Validate that the value is the correct type
             if comparison in ['in', 'notin']:
@@ -124,7 +123,7 @@ def collection_filter(func):
 
             if comparison != 'null':
                 for item in value:
-                    field_type_invalid = _validate_field_type(fields.get(field), item)
+                    field_type_invalid = _validate_field_type(model, fields.get(field), item)
                     if field_type_invalid:
                         return field_type_invalid
 
@@ -160,22 +159,23 @@ def collection_filter(func):
 
 
 # Helper function, takes in a database field and an input value to make sure the input is the correct type for the db
-def _validate_field_type(field, value):
+def _validate_field_type(model, field, value):
     expected_field_type = field.db_field
+    response_messages = model.crud_config.response_messages
 
     if expected_field_type in ['int', 'bool']:
         try:
             int(value)
         except (ValueError, TypeError):
             return response_json(status_code=400,
-                                 message=ErrorTypeInteger.format(value) if expected_field_type in ['int'] else ErrorTypeBoolean.format(value))
+                                 message=response_messages.ErrorTypeInteger.format(value) if expected_field_type == 'int' else response_messages.ErrorTypeBoolean.format(value))
 
     elif expected_field_type == 'datetime':
         try:
             datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
         except (ValueError, TypeError):
             return response_json(status_code=400,
-                                 message=ErrorTypeDatetime.format(value))
+                                 message=response_messages.ErrorTypeDatetime.format(value))
 
     return False
 
