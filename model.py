@@ -1,5 +1,6 @@
 from peewee import CharField, DateTimeField
 from peewee import MySQLDatabase, Model
+import datetime
 import os
 
 db = MySQLDatabase(
@@ -18,4 +19,4 @@ class BaseModel(Model):
 class Person(BaseModel):
     name = CharField()
     email = CharField()
-    create_datetime = DateTimeField(null=True)
+    create_datetime = DateTimeField(default=datetime.datetime.now, null=True)

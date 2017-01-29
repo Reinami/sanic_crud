@@ -1,7 +1,6 @@
 from .crud_config import CrudConfig
 from .single_resource import BaseResource
 from .collection_resource import BaseCollectionResource
-from .helpers import convert_column_type
 
 
 def generate_crud(app, model_array):

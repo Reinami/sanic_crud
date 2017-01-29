@@ -170,10 +170,13 @@ def _validate_field_type(model, field, value):
 
     elif expected_field_type == 'datetime':
         try:
-            datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
-        except (ValueError, TypeError):
-            return response_json(status_code=400,
-                                 message=response_messages.ErrorTypeDatetime.format(value))
+            int(value)
+        except Exception:
+            try:
+                datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+            except (ValueError, TypeError):
+                return response_json(status_code=400,
+                                     message=response_messages.ErrorTypeDatetime.format(value))
 
     return False
 

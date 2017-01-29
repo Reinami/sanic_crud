@@ -8,7 +8,7 @@ class ResponseMessages:
     ErrorDoesNotExist = 'Resource with id \'{}\' does not exist'
     ErrorTypeInteger = 'Value \'{}\' must be an integer'
     ErrorTypeBoolean = 'Value \'{}\' must be a boolean: 0 or 1'
-    ErrorTypeDatetime = 'Value \'{}\' must be a datetime: YYYY-mm-dd HH:MM:SS'
+    ErrorTypeDatetime = 'Value \'{}\' must be a datetime: YYYY-mm-dd HH:MM:SS or integer'
     ErrorTypeList = 'Value \'{}\' must be a comma separated list'
     ErrorPrimaryKeyUpdateInsert = 'Field: \'id\' cannot be inserted or modified, field is primary key'
     ErrorInvalidField = 'Field: \'{}\' does not exist choices are {}'
