@@ -1,19 +1,21 @@
 from datetime import datetime
 from sanic.response import json
 from .messages import ErrorInvalidJSON, ErrorNonNullableFieldInsert, ErrorPrimaryKeyUpdateInsert, ErrorInvalidField, \
-	ErrorFieldOutOfRange, ErrorInvalidFilterOption, FILTER_OPTIONS, ErrorTypeDatetime, ErrorTypeInteger
+	ErrorFieldOutOfRange, ErrorInvalidFilterOption, FILTER_OPTIONS, ErrorTypeDatetime, ErrorTypeInteger, \
+    ErrorTypeBoolean
 
 
 # Validates request data for a put or a post
 def validation(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        fields = model._meta.fields
+        fields = model.crud_config.fields
+        primary_key = model.crud_config.primary_key
 
         # Field names are used to return a nicely formatted list to the user,
-        # we remove id because we don't want users using it.
+        # we remove primary_key because we don't want users using it.
         field_names = list(fields.keys())
-        field_names.remove('id')
+        field_names.remove(primary_key)
 
         required_fields = [field for field in field_names if not fields.get(field).null]
 
@@ -47,7 +49,7 @@ def validation(func):
                                              message=ErrorNonNullableFieldInsert.format(field, required_fields))
 
         # Verify the user is not trying to mess with the primary key
-        if 'id' in request_data:
+        if primary_key in request_data:
             return response_json(status_code=400,
                                  message=ErrorPrimaryKeyUpdateInsert)
 
@@ -88,12 +90,13 @@ def validation(func):
 def collection_filter(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        fields = model._meta.fields
+        fields = model.crud_config.fields
+        primary_key = model.crud_config.primary_key
 
         # Field names are used to return a nicely formatted list to the user,
         # we remove id because we don't want users using it.
         field_names = list(fields.keys())
-        field_names.remove('id')
+        field_names.remove(primary_key)
         query = model.select()
 
         # Iterate over args and split the filters
@@ -203,6 +206,7 @@ def response_json(data=None, status_code=None, message=None, page=None, total_pa
 # Gets a model with a primary key
 def get_model(primary_key, model):
     try:
-        return model.get(model.id == primary_key)
+        pk_field = model.crud_config.primary_key
+        return model.get(getattr(model, pk_field) == primary_key)
     except model.DoesNotExist:
         return {}

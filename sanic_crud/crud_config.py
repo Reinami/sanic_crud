@@ -3,6 +3,8 @@
 
 
 class CrudConfig(object):
+    COLLECTION_MAX_RESULTS_PER_PAGE = 100
+
     def __init__(self, model):
         self.metadata = model._meta
         self.table_name = self.metadata.db_table

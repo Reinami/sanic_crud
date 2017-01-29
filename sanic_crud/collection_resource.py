@@ -1,6 +1,6 @@
 from .base_resource import _BaseResource
 from .helpers import response_json, validation, collection_filter
-from .messages import ErrorTypeInteger, MAX_RESULTS_PER_PAGE, SuccessOk, SuccessRowCreated
+from .messages import ErrorTypeInteger, SuccessOk, SuccessRowCreated
 from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 import traceback
@@ -15,6 +15,7 @@ class BaseCollectionResource(_BaseResource):
     @collection_filter
     def get(self, request, **kwargs):
         try:
+            config = self.model.crud_config
             # Verify page is an int
             try:
                 page = int(request.args.get('page', 1))
@@ -28,8 +29,8 @@ class BaseCollectionResource(_BaseResource):
             results = []
             data = kwargs.get('filtered_results')
             total_records = data.count()
-            total_pages = ceil(total_records / MAX_RESULTS_PER_PAGE)
-            data = data.paginate(page, MAX_RESULTS_PER_PAGE)
+            total_pages = ceil(total_records / config.COLLECTION_MAX_RESULTS_PER_PAGE)
+            data = data.paginate(page, config.COLLECTION_MAX_RESULTS_PER_PAGE)
 
             for row in data:
                 results.append(model_to_dict(row, backrefs=include_foreign_keys))

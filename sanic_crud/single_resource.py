@@ -12,7 +12,7 @@ class BaseResource(_BaseResource):
 
     def get(self, request, **kwargs):
         try:
-            primary_key = kwargs.get('id')
+            primary_key = kwargs.get(self.model.crud_config.primary_key)
             include_foreign_keys = True if 'foreign_keys' in request.args \
                                            and request.args['foreign_keys'][0] == 'true' else False
 

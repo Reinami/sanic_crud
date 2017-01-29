@@ -5,4 +5,4 @@ from .crud_config import CrudConfig
 
 __version__ = '0.1.0'
 
-__all__ = ['BaseCollectionResource', 'BaseResource', 'CrudConfig' 'generate_crud']
+__all__ = ['CrudConfig' 'generate_crud']

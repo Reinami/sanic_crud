@@ -30,5 +30,3 @@ SuccessOk = 'OK'
 SuccessRowUpdated = 'Resource with id \'{}\' was updated!'
 SuccessRowCreated = 'Resource with id \'{}\' was created!'
 SuccessRowDeleted = 'Resource with id \'{}\' was deleted!'
-
-MAX_RESULTS_PER_PAGE = 100
