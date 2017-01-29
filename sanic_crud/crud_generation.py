@@ -3,7 +3,7 @@ from .single_resource import BaseResource
 from .collection_resource import BaseCollectionResource
 
 
-def generate_crud (app, model_array):
+def generate_crud(app, model_array):
     for model in model_array:
         if not hasattr(model, 'crud_config'):
             model.crud_config = CrudTable(model)
