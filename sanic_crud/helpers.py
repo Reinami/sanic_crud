@@ -9,15 +9,12 @@ from .messages import ErrorInvalidJSON, ErrorNonNullableFieldInsert, ErrorPrimar
 def validation(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        fields = model.crud_config.fields
-        primary_key = model.crud_config.primary_key
+        config = model.crud_config
 
-        # Field names are used to return a nicely formatted list to the user,
-        # we remove primary_key because we don't want users using it.
-        field_names = list(fields.keys())
-        field_names.remove(primary_key)
-
-        required_fields = [field for field in field_names if not fields.get(field).null]
+        fields = config.fields
+        field_names = config.get_field_names()
+        primary_key = config.primary_key
+        required_fields = config.required_fields
 
         # min/max value size for fields
         field_default_size = {
@@ -39,10 +36,10 @@ def validation(func):
             return response_json(status_code=400, message=ErrorInvalidJSON)
 
         # Verify all non-nullable fields are present only needs to be done on post
-        for field in field_names:
-            field_obj = fields.get(field)
+        if request.method == 'POST':
+            for field in field_names:
+                field_obj = fields.get(field)
 
-            if request.method == 'POST':
                 if not field_obj.null:
                     if field not in request.json or request.json.get(field) is None:
                         return response_json(status_code=400,
@@ -61,11 +58,12 @@ def validation(func):
         # Verify all of the request_data is a valid type for the database
         for key, value in request_data.items():
             field_type_invalid = _validate_field_type(fields.get(key), value)
+            field_type = fields.get(key).db_field
+
             if field_type_invalid:
                 return field_type_invalid
 
             # Verify min/max size
-            field_type = fields.get(key).db_field
             if field_type in field_default_size:
                 min_size = field_default_size.get(field_type).get('min')
                 max_size = field_default_size.get(field_type).get('max')
@@ -90,13 +88,10 @@ def validation(func):
 def collection_filter(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        fields = model.crud_config.fields
-        primary_key = model.crud_config.primary_key
+        config = model.crud_config
 
-        # Field names are used to return a nicely formatted list to the user,
-        # we remove id because we don't want users using it.
-        field_names = list(fields.keys())
-        field_names.remove(primary_key)
+        fields = config.fields
+        field_names = config.get_field_names()
         query = model.select()
 
         # Iterate over args and split the filters
@@ -168,14 +163,13 @@ def collection_filter(func):
 def _validate_field_type(field, value):
     expected_field_type = field.db_field
 
-    if expected_field_type in ['int', 'bool', 'primary_key']:
+    if expected_field_type in ['int', 'bool']:
         try:
             int(value)
         except (ValueError, TypeError):
             return response_json(status_code=400,
-                                 message=ErrorTypeInteger.format(value) if expected_field_type in ['int',
-                                                                                                   'primary_key'] else ErrorTypeBoolean.format(
-                                     value))
+                                 message=ErrorTypeInteger.format(value) if expected_field_type in ['int'] else ErrorTypeBoolean.format(value))
+
     elif expected_field_type == 'datetime':
         try:
             datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
