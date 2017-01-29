@@ -9,7 +9,7 @@ There are 2 types of resources (endpoints) available, Single Resources and Colle
 
 ## Single Resource ([GET, PUT, DELETE])
 A Single Resource is what it sounds like. A single resources or row from the database. It is accessed by navigating to
-the ```/{tablename}/{primary_key}``` endpoint.
+the `/{tablename}/{primary_key}` endpoint.
 
 #### GET Request
 For Example a **GET** request to `http://127.0.0.1:8000/person/1` might return:
