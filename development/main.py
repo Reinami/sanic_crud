@@ -1,8 +1,8 @@
 from sanic import Sanic
 from sanic.log import log
 
-from development.model import Person, db
-from sanic_crud import generate_crud
+from .model import Person, db
+from ..sanic_crud import generate_crud
 
 db.create_tables([Person])
 

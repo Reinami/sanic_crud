@@ -46,8 +46,8 @@ Documentation can be found in the ``docs`` directory.
 TODO
 ----------
 
+* Add documentation and support for developing
 * Write tests
 * Get working with travis-ci
 * Add support for custom routes per model
 * Make int/string length validation better
-* Add documentation for developing
