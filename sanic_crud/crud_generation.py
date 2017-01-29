@@ -1,4 +1,4 @@
-from .table import CrudTable
+from .crud_config import CrudConfig
 from .single_resource import BaseResource
 from .collection_resource import BaseCollectionResource
 
@@ -6,7 +6,7 @@ from .collection_resource import BaseCollectionResource
 def generate_crud(app, model_array):
     for model in model_array:
         if not hasattr(model, 'crud_config'):
-            model.crud_config = CrudTable(model)
+            model.crud_config = CrudConfig(model)
 
         SingleResource = type('SingleResource', (BaseResource,), {'model': model})
         CollectionResource = type('CollectionResource', (BaseCollectionResource,), {'model': model})

@@ -2,7 +2,7 @@
 # peewee model and avoid messing with model object data as much as possible
 
 
-class CrudTable(object):
+class CrudConfig(object):
     def __init__(self, model):
         self.metadata = model._meta
         self.table_name = self.metadata.db_table

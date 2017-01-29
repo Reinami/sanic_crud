@@ -1,13 +1,7 @@
 from sanic import Sanic
 from sanic.log import log
 from model import Person, db
-from sanic_crud import BaseResource, BaseCollectionResource, generate_crud
-
-class PersonResource(BaseResource):
-    model = Person
-
-class PersonCollectionResource(BaseCollectionResource):
-    model = Person
+from sanic_crud import generate_crud
 
 # db.create_tables([Person])
 
