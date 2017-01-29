@@ -16,9 +16,7 @@ def validation(func):
         # min/max value size for fields
         field_default_size = {
             'int': {'min': -2147483647, 'max': 2147483647},
-            'bigint': {'min': -9223372036854775808, 'max': 9223372036854775807},
-            'primary_key': {'min': -2147483647, 'max': 2147483647},
-
+            'bigint': {'min': -9223372036854775808, 'max': 9223372036854775807}
         }
 
         # min/max length for fields
