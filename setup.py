@@ -7,7 +7,7 @@ setup(
     license='MIT',
     author='Typhon',
     author_email='typhonnge@gmail.com',
-    description='A REST API framework for building CRUD APIs using Sanic and PeeWee',
+    description='A REST API framework for building CRUD APIs using Sanic and peewee',
     packages=['sanic_crud'],
     platforms='any',
     install_requires=[
