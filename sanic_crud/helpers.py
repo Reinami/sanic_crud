@@ -202,3 +202,16 @@ def get_model(primary_key, model):
         return model.get(getattr(model, pk_field) == primary_key)
     except model.DoesNotExist:
         return {}
+
+
+# Returns python type from a get_column_type on a peewee field
+def convert_column_type(column_type):
+    column_type = column_type.replace(' ', '')
+    column_type = column_type.replace('AUTO_INCREMENT', '')
+
+    types = {
+        'INTEGER': 'int',
+        'VARCHAR': 'str'
+    }
+
+    return types.get(column_type, None)

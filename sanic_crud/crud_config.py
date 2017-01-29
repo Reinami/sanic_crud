@@ -1,5 +1,6 @@
 # This is here to allow a sub-object that contains all of our crud information within the
 # peewee model and avoid messing with model object data as much as possible
+from .helpers import convert_column_type
 
 
 class ResponseMessages:
@@ -46,6 +47,7 @@ class CrudConfig(object):
         self.fields = self.metadata.fields
         self.required_fields = [field for field in self.get_field_names() if not self.fields.get(field).null]
         self.primary_key = self._get_primary_key()
+        self.primary_key_type = convert_column_type(self.fields.get(self.primary_key).get_column_type())
         self.base_uri = self._generate_base_uri()
         self.response_messages = ResponseMessages()
 
