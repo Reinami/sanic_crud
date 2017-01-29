@@ -14,8 +14,8 @@ class BaseCollectionResource(_BaseResource):
     @collection_filter
     async def get(self, request, **kwargs):
         try:
-            config = self.model.crud_config
-            response_messages = config.response_messages
+            shortcuts = self.model.shortcuts
+            response_messages = self.model.crud_config.response_messages
 
             # Verify page is an int
             try:
@@ -30,8 +30,8 @@ class BaseCollectionResource(_BaseResource):
             results = []
             data = kwargs.get('filtered_results')
             total_records = data.count()
-            total_pages = ceil(total_records / config.COLLECTION_MAX_RESULTS_PER_PAGE)
-            data = data.paginate(page, config.COLLECTION_MAX_RESULTS_PER_PAGE)
+            total_pages = ceil(total_records / shortcuts.COLLECTION_MAX_RESULTS_PER_PAGE)
+            data = data.paginate(page, shortcuts.COLLECTION_MAX_RESULTS_PER_PAGE)
 
             for row in data:
                 results.append(model_to_dict(row, backrefs=include_foreign_keys))

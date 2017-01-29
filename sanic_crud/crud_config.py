@@ -41,6 +41,11 @@ class CrudConfig(object):
         'notin': 'field is not in list'
     }
 
+    response_messages = ResponseMessages()
+
+
+# Internal class only used to shortcut a variety of things
+class CrudShortcuts(object):
     def __init__(self, model):
         self.metadata = model._meta
         self.table_name = self.metadata.db_table
@@ -49,7 +54,6 @@ class CrudConfig(object):
         self.primary_key = self._get_primary_key()
         self.primary_key_type = convert_column_type(self.fields.get(self.primary_key).get_column_type())
         self.base_uri = self._generate_base_uri()
-        self.response_messages = ResponseMessages()
 
     def _get_primary_key(self):
         for key, value in self.fields.items():

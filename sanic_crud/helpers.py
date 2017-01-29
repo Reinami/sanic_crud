@@ -5,13 +5,13 @@ from sanic.response import json
 def validation(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        config = model.crud_config
+        shortcuts = model.shortcuts
 
-        fields = config.fields
-        field_names = config.get_field_names()
-        primary_key = config.primary_key
-        required_fields = config.required_fields
-        response_messages = config.response_messages
+        fields = shortcuts.fields
+        field_names = shortcuts.get_field_names()
+        primary_key = shortcuts.primary_key
+        required_fields = shortcuts.required_fields
+        response_messages = self.model.crud_config.response_messages
 
         # min/max value size for fields
         field_default_size = {
@@ -83,11 +83,11 @@ def validation(func):
 def collection_filter(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        config = model.crud_config
+        shortcuts = model.shortcuts
 
-        fields = config.fields
-        field_names = config.get_field_names()
-        response_messages = config.response_messages
+        fields = shortcuts.fields
+        field_names = shortcuts.get_field_names()
+        response_messages = self.model.crud_config.response_messages
 
         query = model.select()
 
@@ -106,9 +106,9 @@ def collection_filter(func):
                 comparison = filter_parts[1]
 
             # Validate that a supported comparison is used
-            if comparison not in config.FILTER_OPTIONS:
+            if comparison not in shortcuts.FILTER_OPTIONS:
                 return response_json(status_code=400,
-                                     message=response_messages.ErrorInvalidFilterOption.format(comparison, config.FILTER_OPTIONS))
+                                     message=response_messages.ErrorInvalidFilterOption.format(comparison, shortcuts.FILTER_OPTIONS))
 
             # Validate that the field is part of the table
             if field not in fields:
@@ -201,7 +201,7 @@ def response_json(data=None, status_code=None, message=None, page=None, total_pa
 # Gets a model with a primary key
 def get_model(primary_key, model):
     try:
-        pk_field = model.crud_config.primary_key
+        pk_field = model.shortcuts.primary_key
         return model.get(getattr(model, pk_field) == primary_key)
     except model.DoesNotExist:
         return {}

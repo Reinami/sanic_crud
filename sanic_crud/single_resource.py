@@ -11,10 +11,10 @@ class BaseResource(_BaseResource):
 
     async def get(self, request, **kwargs):
         try:
-            config = self.model.crud_config
-            response_messages = config.response_messages
+            shortcuts = self.model.shortcuts
+            response_messages = self.model.crud_config.response_messages
 
-            primary_key = kwargs.get(config.primary_key)
+            primary_key = kwargs.get(shortcuts.primary_key)
             include_foreign_keys = True if 'foreign_keys' in request.args \
                                            and request.args['foreign_keys'][0] == 'true' else False
 
@@ -36,10 +36,10 @@ class BaseResource(_BaseResource):
     @validation
     async def put(self, request, **kwargs):
         try:
-            config = self.model.crud_config
-            response_messages = config.response_messages
+            shortcuts = self.model.shortcuts
+            response_messages = self.model.crud_config.response_messages
 
-            primary_key = kwargs.get(config.primary_key)
+            primary_key = kwargs.get(shortcuts.primary_key)
             resource = get_model(primary_key=primary_key, model=self.model)
 
             if not resource:
@@ -62,10 +62,10 @@ class BaseResource(_BaseResource):
 
     async def delete(self, request, **kwargs):
         try:
-            config = self.model.crud_config
-            response_messages = config.response_messages
+            shortcuts = self.model.shortcuts
+            response_messages = self.model.crud_config.response_messages
 
-            primary_key = kwargs.get(config.primary_key)
+            primary_key = kwargs.get(shortcuts.primary_key)
             resource = get_model(primary_key=primary_key, model=self.model)
 
             if not resource:
