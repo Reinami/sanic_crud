@@ -9,6 +9,7 @@ Example
 ----------
 
 .. code:: python
+
     from peewee import CharField, DateTimeField, SqliteDatabase, Model
     import datetime
     from sanic import Sanic
