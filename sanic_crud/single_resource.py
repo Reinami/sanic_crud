@@ -9,7 +9,7 @@ import traceback
 class BaseResource(_BaseResource):
     model = None
 
-    def get(self, request, **kwargs):
+    async def get(self, request, **kwargs):
         try:
             config = self.model.crud_config
             response_messages = config.response_messages
@@ -34,7 +34,7 @@ class BaseResource(_BaseResource):
                                  status_code=500)
 
     @validation
-    def put(self, request, **kwargs):
+    async def put(self, request, **kwargs):
         try:
             config = self.model.crud_config
             response_messages = config.response_messages
@@ -60,7 +60,7 @@ class BaseResource(_BaseResource):
             return response_json(message=str(e),
                                  status_code=500)
 
-    def delete(self, request, **kwargs):
+    async def delete(self, request, **kwargs):
         try:
             config = self.model.crud_config
             response_messages = config.response_messages

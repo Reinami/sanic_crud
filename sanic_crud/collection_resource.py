@@ -12,7 +12,7 @@ class BaseCollectionResource(_BaseResource):
     model = None
 
     @collection_filter
-    def get(self, request, **kwargs):
+    async def get(self, request, **kwargs):
         try:
             config = self.model.crud_config
             response_messages = config.response_messages
@@ -47,7 +47,7 @@ class BaseCollectionResource(_BaseResource):
                                  status_code=500)
 
     @validation
-    def post(self, request):
+    async def post(self, request):
         response_messages = self.model.crud_config.response_messages
 
         try:
