@@ -46,8 +46,9 @@ Documentation can be found in the ``docs`` directory.
 TODO
 ----------
 
-* Add documentation and support for developing
-* Write tests
-* Get working with travis-ci
-* Add support for custom routes per model
-* Make int/string length validation better
+* `Add documentation and support for developing <https://github.com/Typhon66/sanic_crud/issues/9>`_
+* `Write tests <https://github.com/Typhon66/sanic_crud/issues/8>`_
+* `Get working with travis-ci <https://github.com/Typhon66/sanic_crud/issues/10>`_
+* `Add sanic_openapi/swagger support <https://github.com/Typhon66/sanic_crud/issues/11>`_
+* `Add support for custom routes per model <https://github.com/Typhon66/sanic_crud/issues/7>`_
+* `Make int/string length validation better <https://github.com/Typhon66/sanic_crud/issues/5>`_
