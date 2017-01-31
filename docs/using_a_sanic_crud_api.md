@@ -74,8 +74,8 @@ For example a **GET** request to `http://127.0.0.1:8000/person` might return som
     "data": [
         {
             "id": 10,
-            "name": "yes",
-            "email": "yee",
+            "name": "yee",
+            "email": "yee@yee.com",
             "create_datetime": null
         },
         {
