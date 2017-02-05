@@ -1,8 +1,6 @@
 sanic_crud
 =================================
 
-|Build Status| |PyPI| |PyPI version|
-
 sanic_crud is a REST API framework for creating a CRUD (Create/Retrieve/Update/Delete) API using `Sanic <https://github.com/channelcat/sanic>`_ and `PeeWee <http://docs.peewee-orm.com/en/latest/>`_
 You can use sanic_crud to automatically create an API from your PeeWee models, see how it works in the `Documentation <docs/using_a_sanic_crud_api.md>`_
 Contributions to the repository are welcome!
