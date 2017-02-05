@@ -1,5 +1,8 @@
 ## Version 0.1
 
+ - 0.1.5
+  - Fixing docs formatting on PyPI
+
  - 0.1.4
   - Upping version to test travis deploy
 
