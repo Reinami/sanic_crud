@@ -19,25 +19,27 @@ def test_get_non_existant_record(app):
 #  POST
 # ------------------------------------------------------------ #
 
-# Make this pass first
-# def test_post_invalid_json(app):
-#     request, response = sanic_endpoint_test(app, uri='/person', method='post')
-#     expected_response = '{"name": invalid json}'
-#
-#     print(json.loads(response.text))
-#
-#     assert 0
-#     assert json.loads(response.text) == expected_response
+def test_post_invalid_json(app):
+    payload = '{"name": invalid}'
+    headers = {'content-type': 'application/json'}
+    request, response = sanic_endpoint_test(app, data=payload, headers=headers, uri='/person', method='post')
+    expected_response = {'data': None,
+                         'status_code': 400,
+                         'message': 'Invalid JSON input'}
+
+    assert json.loads(response.text) == expected_response
 
 
-# Make this pass first
-# def test_post_invalid_field(app):
-#     payload = {'name': 'Knackles the Echidna', 'email': 'gottapunchfeast@punch.com', 'job': 1, 'yee': 1}
-#     headers = {'content-type': 'application/json'}
-#     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person', method='post')
-#
-#     print(response.text)
-#     assert 0
+def test_post_invalid_field(app):
+    payload = {'name': 'Knackles the Echidna', 'email': 'gottapunchfeast@punch.com', 'job': 1, 'yee': 1}
+    headers = {'content-type': 'application/json'}
+    request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person', method='post')
+    expected_response = {'data': None,
+                         'status_code': 400,
+                         'message': "Field: 'yee' does not exist choices are ['name', 'job', 'email']"}
+
+    assert json.loads(response.text) == expected_response
+
 
 def test_post_missing_required_field(app):
     payload = {'email': 'gottapunchfeast@punch.com', 'job': 1}
@@ -75,24 +77,27 @@ def test_put_non_existant_record(app):
 
     assert json.loads(response.text) == expected_response
 
-# Make this pass first
-# def test_put_invalid_json(app):
-#     request, response = sanic_endpoint_test(app, uri='/job/1', method='put')
-#     expected_response = '{"name": invalid json}'
-#
-#     print(json.loads(response.text))
-#
-#     assert 0
-#     assert json.loads(response.text) == expected_response
 
-# Make this pass first
-# def test_put_invalid_field(app):
-#     payload = {'name': 'Knackles the Echidna', 'email': 'gottapunchfeast@punch.com', 'job': 1, 'yee': 1}
-#     headers = {'content-type': 'application/json'}
-#     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person/1', method='post')
-#
-#     print(response.text)
-#     assert 0
+def test_put_invalid_json(app):
+    payload = '{"name": invalid}'
+    headers = {'content-type': 'application/json'}
+    request, response = sanic_endpoint_test(app, data=payload, headers=headers, uri='/person/1', method='put')
+    expected_response = {'data': None,
+                         'status_code': 400,
+                         'message': 'Invalid JSON input'}
+
+    assert json.loads(response.text) == expected_response
+
+
+def test_put_invalid_field(app):
+    payload = {'name': 'Knackles the Echidna', 'email': 'gottapunchfeast@punch.com', 'job': 1, 'yee': 1}
+    headers = {'content-type': 'application/json'}
+    request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person/1', method='put')
+    expected_response = {'data': None,
+                         'status_code': 400,
+                         'message': "Field: 'yee' does not exist choices are ['name', 'job', 'email']"}
+
+    assert json.loads(response.text) == expected_response
 
 def test_put_int_out_of_range(app):
     payload = {'base_pay': 3000000000}
@@ -117,11 +122,10 @@ def test_delete_non_existant_record(app):
 
     assert json.loads(response.text) == expected_response
 
-# Make this pass first
-# def test_put_invalid_json(app):
-#     request, response = sanic_endpoint_test(app, uri='/job/2', method='delete')
-#     expected_response = {'data': {},
-#                          'status_code': 404,
-#                          'message': "Resource with id '2' does not exist"}
-#
-#     assert json.loads(response.text) == expected_response
+def test_put_invalid_json(app):
+    request, response = sanic_endpoint_test(app, uri='/job/2', method='delete')
+    expected_response = {'data': {},
+                         'status_code': 404,
+                         'message': "Resource with id '2' does not exist"}
+
+    assert json.loads(response.text) == expected_response
