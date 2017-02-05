@@ -35,12 +35,12 @@ Example
     app.run(host="0.0.0.0", port=8000, debug=True)
 
 Installation
-----------
+------------
 
 -  `python -m pip install sanic-crud`
 
 Documentation
-----------
+-------------
 
 Documentation can be found in the ``docs`` directory.
 
@@ -53,7 +53,7 @@ Documentation can be found in the ``docs`` directory.
 
 
 TODO
-----------
+----
 
 * `Add sanic_openapi/swagger support <https://github.com/Typhon66/sanic_crud/issues/11>`_
 * `Add support for custom routes per model <https://github.com/Typhon66/sanic_crud/issues/7>`_
