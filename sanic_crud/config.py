@@ -1,6 +1,6 @@
 # This is here to allow a sub-object that contains all of our crud information within the
 # peewee model and avoid messing with model object data as much as possible
-from .helpers import convert_column_type
+from sanic_crud.helpers import convert_column_type
 
 
 class ResponseMessages:

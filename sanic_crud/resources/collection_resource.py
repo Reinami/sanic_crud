@@ -1,10 +1,11 @@
-from .base_resource import _BaseResource
-from .helpers import response_json, validation, collection_filter
+import traceback
+from math import ceil
+
 from playhouse.shortcuts import model_to_dict
 from sanic.log import log
-import traceback
 
-from math import ceil
+from ..resources.base_resource import _BaseResource
+from ..helpers import response_json, validation, collection_filter
 
 
 # Resource for multiple objects
@@ -14,7 +15,6 @@ class BaseCollectionResource(_BaseResource):
     @collection_filter
     async def get(self, request, **kwargs):
         try:
-            shortcuts = self.model.shortcuts
             config = self.model.crud_config
             response_messages = config.response_messages
 
@@ -43,7 +43,7 @@ class BaseCollectionResource(_BaseResource):
                                  page=page,
                                  total_pages=total_pages)
         except Exception as e:
-            log.error(e.with_traceback())
+            log.error(traceback.print_exc())
             return response_json(message=str(e),
                                  status_code=500)
 

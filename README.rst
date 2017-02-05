@@ -42,6 +42,11 @@ Documentation
 
 Documentation can be found in the ``docs`` directory.
 
+Uploading to pypi (for my own sanity):
+----------
+
+ * python setup.py sdist
+ * twine upload -r pypi dist\{latest tar}
 
 TODO
 ----------
