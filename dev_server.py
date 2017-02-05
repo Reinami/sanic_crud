@@ -5,7 +5,6 @@ import datetime
 
 from sanic_crud import generate_crud
 
-
 db = SqliteDatabase('dev_data.db')
 
 
@@ -25,7 +24,6 @@ class Person(BaseModel):
     job = ForeignKeyField(Job, related_name="person_job", null=True)
     email = CharField()
     create_datetime = DateTimeField(default=datetime.datetime.now, null=True)
-
 
 # if there is an error DB already exists
 try:

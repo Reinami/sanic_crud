@@ -7,9 +7,8 @@ install: pip install tox-travis
 script: tox
 deploy:
   provider: pypi
-  user: Typhon66
+  user: Typhon
   password:
     secure: M3//aOurRFXzmj5EEWDU9gPFrl0OMSnTYfRaTeC0G6iEPeKQJRJX/s+eH7h+S4dmwcXEbLdI6ZOlOY58KiHzYTLnV6nhwNOAf/CHypQ5jgY/QBqvjE5w901aGM4TDi+M9AsZ2AF011KAtgNemsEyTPBgQAikC5kBsPLlhPFtfBBLg+yg4ZN+wL4xIVIEpbtgsFy48zZdDLJoD8UCiCwWARcYUqS1DbNnFkakCVTajcugVvk3a1RrqWCSzlfoehiOwRw4/TrCuuAiKBqBYwZwJ235Kve9gVPSyymCSleXX4QeS0atYcLQSvYpsn6zNpNXQImjLWXOjcfIhFHXJsG6l0DvVIMD2ftyEm9OieA1JLwt5ozIt6rAqEyJIcLVaERpMrIBiUsHuhhdwgEyi1T8i3ahWxy1o70QRedE41yclr+HB5mpa1iT7+MxsPLoOHE0e/Tww1f4GzutbMLcZog0xoBM5MJ5sSolKoly6GSG65RY5uc5G/JBF6nQmVMW34s7Q29kffLgMs6WH8GZiwzNgw2fhZNAW39KeGJTNSbmoC4Qdlc13RjKRalnHmq6kSleRS/rJYow48toqE0iV97m6HFvO5Asi8hQFBHU2HbGI8fanfkGU6BF1wABvDC5jZpaBGIGYakijORksR/JwXQG2iTGbsQxl6TB+pZEk7VK9cU=
   on:
     tags: true
-    branch: stable
