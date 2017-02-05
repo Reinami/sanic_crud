@@ -1,5 +1,5 @@
 from .crud_generation import generate_crud
-from .crud_config import CrudConfig, ResponseMessages
+from .config import CrudConfig, ResponseMessages
 
 __version__ = '0.1.1'
 

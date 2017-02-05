@@ -1,6 +1,6 @@
-from .crud_config import CrudConfig, CrudShortcuts
-from .single_resource import BaseResource
-from .collection_resource import BaseCollectionResource
+from .config import CrudConfig, CrudShortcuts
+from .resources.single_resource import BaseResource
+from .resources.collection_resource import BaseCollectionResource
 
 
 def generate_crud(app, model_array):

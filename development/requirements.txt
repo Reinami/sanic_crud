@@ -1,3 +1,0 @@
-peewee
-sanic
-PyMySQL
