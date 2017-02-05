@@ -26,7 +26,6 @@ class Person(BaseModel):
     email = CharField()
     create_datetime = DateTimeField(default=datetime.datetime.now, null=True)
 
-
 # if there is an error DB already exists
 try:
     db.create_tables([Person, Job])
