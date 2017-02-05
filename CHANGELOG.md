@@ -1,5 +1,8 @@
 ## Version 0.1
 
+ - 0.1.4
+  - Upping version to test travis deploy
+
  - 0.1.3
   - Written tests and minor messaging fixes
 
