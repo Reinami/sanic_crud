@@ -1,4 +1,4 @@
-sanic_crud
+sanic_crud 
 =================================
 
 sanic_crud is a REST API framework for creating a CRUD (Create/Retrieve/Update/Delete) API using `Sanic <https://github.com/channelcat/sanic>`_ and `PeeWee <http://docs.peewee-orm.com/en/latest/>`_
