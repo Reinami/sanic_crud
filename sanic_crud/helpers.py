@@ -9,7 +9,7 @@ def validation(func):
         shortcuts = model.shortcuts
 
         fields = shortcuts.fields
-        field_names = shortcuts.get_field_names().sort()
+        field_names = shortcuts.get_field_names()
         primary_key = shortcuts.primary_key
         required_fields = shortcuts.required_fields
         response_messages = self.model.crud_config.response_messages
