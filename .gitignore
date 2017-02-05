@@ -7,3 +7,4 @@ dist/
 .cache
 tests/test.db
 .tox
+secrets.txt
