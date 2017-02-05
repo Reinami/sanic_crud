@@ -9,9 +9,9 @@ def validation(func):
         shortcuts = model.shortcuts
 
         fields = shortcuts.fields
-        field_names = shortcuts.get_field_names()
+        field_names = shortcuts.get_field_names().sort()
         primary_key = shortcuts.primary_key
-        required_fields = shortcuts.required_fields
+        required_fields = sorted(shortcuts.required_fields)
         response_messages = self.model.crud_config.response_messages
 
         # min/max value size for fields

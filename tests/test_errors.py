@@ -36,7 +36,7 @@ def test_post_invalid_field(app):
     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person', method='post')
     expected_response = {'data': None,
                          'status_code': 400,
-                         'message': "Field: 'yee' does not exist choices are ['job', 'name', 'email']"}
+                         'message': "Field: 'yee' does not exist choices are ['email', 'job', 'name']"}
 
     assert json.loads(response.text) == expected_response
 
@@ -47,7 +47,7 @@ def test_post_missing_required_field(app):
     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person', method='post')
     expected_response = {'data': None,
                          'status_code': 400,
-                         'message': "Field: 'name' cannot be null, required fields are: ['name', 'email']"}
+                         'message': "Field: 'name' cannot be null, required fields are: ['email', 'name']"}
 
     assert json.loads(response.text) == expected_response
 
@@ -95,7 +95,7 @@ def test_put_invalid_field(app):
     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person/1', method='put')
     expected_response = {'data': None,
                          'status_code': 400,
-                         'message': "Field: 'yee' does not exist choices are ['job', 'name', 'email']"}
+                         'message': "Field: 'yee' does not exist choices are ['email', 'job', 'name']"}
 
     assert json.loads(response.text) == expected_response
 
