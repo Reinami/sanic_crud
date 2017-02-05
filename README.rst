@@ -51,7 +51,6 @@ Uploading to pypi (for my own sanity):
 TODO
 ----------
 
-* `Add documentation and support for developing <https://github.com/Typhon66/sanic_crud/issues/9>`_
 * `Write tests <https://github.com/Typhon66/sanic_crud/issues/8>`_
 * `Get working with travis-ci <https://github.com/Typhon66/sanic_crud/issues/10>`_
 * `Add sanic_openapi/swagger support <https://github.com/Typhon66/sanic_crud/issues/11>`_
