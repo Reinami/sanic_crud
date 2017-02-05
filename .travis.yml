@@ -1,13 +1,14 @@
 sudo: false
 language: python
 python:
-  - "3.5"
-  - "3.6"
+- '3.5'
+- '3.6'
 install: pip install tox-travis
 script: tox
 deploy:
   provider: pypi
   user: Typhon
-  password: nh2Ru0r8HFjacnnj8gaJh3z1jduuAqLRYKKMzD52GZMm2RXCqi/mMfwkCXqgfDm/nXuIDky7/4dwushEKN3OSup3SiB1l69/QkVSvG+1dKzGYrIkhC0SuXwe4w4hTv+5dS/GLU+QNdzMSyI4+YfQdP9QeFiIOwbDEyn+zzJL3FPAsg4OskyNcJt5gvvkrF5KI1OEHNtQbfPzzAnb03S+wuDPsbKLw64CQeFdP+N9mguo5yh2DslnQeLts8N5qp0bIbqCb5qbOWewuarhBvF4IntbRtNs+RRJO5ZkcN7wIWcIo1VY5KD9Oxh4vIlBM9LjPoezIQQpTBRR50d6eagRKYPo/nqDMCz3qTOJBbvtagMOAFO46TfRbljo8GowDCIWlSX/aivuYN2kVbqBd+kPs4CktjxlxinLrRBjIkBFjpmpsi9yUj6pLwJafcqsYzzMnFWdvLs/A6l/yW5vwzHaSrxuXcjd0PVu26HdoOmib9UPJrilsP4rxMJ9p9Cn0+K7snP3YkCMax8kuC8PAc0GNnUhQJyvDAo/d34XE59klxc7r6P4XTBHxKES+3hPkscs8oXqBXMdrXexoBF55LQIo0EiqCtWJEGhq4h+1mZ/EkmJX7O9rIjh93lgMj+KjtRAwRqzqVldm4ZOLKhgNGoLNa+bgJxfiLynW+irsTHcnB0=
+  password:
+    secure: BilGD7T4nJZHQFtrenfltec6rPtVUCG62nkpQoDSTxK5iCkfVBU+gs3HcBHrdawOAe4epvF4K5Kn2Ww+DQul/VXU0KwgoQtEYw23DfWbykvaBhRnDzpIhR9Z3gBq4aKuehlajkZId+OcPLZCMcAlJB4Y3PwIEDPEWoEPD/47f9cCZFYwu4rWo02MqVkRC0Z2pt21LZVGouPfMc0dmuD0uvvajwIO9l/YfbxKni5sMrDQC/7uGjLRK8dXLwXItgL3i9u4ji/huk1mKbyQBEIGaxFTVJUvQ7Fo0Iop/iJ2q/bqPMG75Nwzvc0Qx1KYus6R+FLTn59ysE60Fh5ItXv7UsP1DR6mW8tDKg+d/W3qpCtmXmzqwaFrMmKcHIzrfrDOUjiaVitZWSYj1Llp0xDufV70ngyx92Bqawz0cAjjxNnBgdyqUPo6FS5UIA7tc4vtBulJ9cG1j6FwirDy1iuQpwdAyFO9MtBfKeHmfsn4nxX6f/ai+m+lh/WuRz6lkQGGcI/BPqzxqzkuEnX/cztogEwrrXToeFvisUzGktLcENwVgIVvIygZByR3zF+LY1XQwHEEEZbtnVyrLlBkQSWT8Eu+FTepYeW8pepAssB5Dnx5ySUX2G9YeFzQMbPHzWc0BF1rjaqR6SO7D1HbbBz/kn4PJEwv1cwHjyrwE0T/hHo=
   on:
     tags: true
