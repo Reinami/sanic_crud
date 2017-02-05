@@ -5,7 +5,6 @@ import datetime
 
 from sanic_crud import generate_crud
 
-
 db = SqliteDatabase('dev_data.db')
 
 
