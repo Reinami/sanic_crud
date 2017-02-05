@@ -34,22 +34,15 @@ def test_post_invalid_field(app):
     payload = {'name': 'Knackles the Echidna', 'email': 'gottapunchfeast@punch.com', 'job': 1, 'yee': 1}
     headers = {'content-type': 'application/json'}
     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person', method='post')
-    expected_response = {'data': None,
-                         'status_code': 400,
-                         'message': "Field: 'yee' does not exist choices are ['name', 'job', 'email']"}
-
-    assert json.loads(response.text) == expected_response
+    assert json.loads(response.text).get('status_code') == 400
 
 
 def test_post_missing_required_field(app):
     payload = {'email': 'gottapunchfeast@punch.com', 'job': 1}
     headers = {'content-type': 'application/json'}
     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person', method='post')
-    expected_response = {'data': None,
-                         'status_code': 400,
-                         'message': "Field: 'name' cannot be null, required fields are: ['name', 'email']"}
 
-    assert json.loads(response.text) == expected_response
+    assert json.loads(response.text).get('status_code') == 400
 
 
 def test_post_int_out_of_range(app):
@@ -93,11 +86,8 @@ def test_put_invalid_field(app):
     payload = {'name': 'Knackles the Echidna', 'email': 'gottapunchfeast@punch.com', 'job': 1, 'yee': 1}
     headers = {'content-type': 'application/json'}
     request, response = sanic_endpoint_test(app, data=json.dumps(payload), headers=headers, uri='/person/1', method='put')
-    expected_response = {'data': None,
-                         'status_code': 400,
-                         'message': "Field: 'yee' does not exist choices are ['name', 'job', 'email']"}
 
-    assert json.loads(response.text) == expected_response
+    assert json.loads(response.text).get('status_code') == 400
 
 def test_put_int_out_of_range(app):
     payload = {'base_pay': 3000000000}
