@@ -13,3 +13,5 @@ you can browse the issues and help work through any that are currently outstandi
  * This server loads from the sanic_crud directory directly, so any changes you make there will be reflected
  * Write tests (if relevant)
  * Submit a pull request
+
+**To see how the server works see:** [Using a sanic_crud API](using_a_sanic_crud_api.md)
