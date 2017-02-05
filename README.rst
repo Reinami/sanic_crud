@@ -51,7 +51,6 @@ Uploading to pypi (for my own sanity):
 TODO
 ----------
 
-* `Write tests <https://github.com/Typhon66/sanic_crud/issues/8>`_
 * `Get working with travis-ci <https://github.com/Typhon66/sanic_crud/issues/10>`_
 * `Add sanic_openapi/swagger support <https://github.com/Typhon66/sanic_crud/issues/11>`_
 * `Add support for custom routes per model <https://github.com/Typhon66/sanic_crud/issues/7>`_
