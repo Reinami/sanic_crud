@@ -37,7 +37,7 @@ Example
 Installation
 ----------
 
--  `python -m pip install sanic_crud`
+-  `python -m pip install sanic-crud`
 
 Documentation
 ----------
