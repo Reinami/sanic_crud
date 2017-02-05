@@ -1,5 +1,6 @@
 from datetime import datetime
 from sanic.response import json
+from sanic.log import log
 
 # Validates request data for a put or a post
 def validation(func):
@@ -27,7 +28,7 @@ def validation(func):
         # verify the request data is valid JSON
         try:
             request_data = request.json
-        except ValueError:
+        except Exception:
             return response_json(status_code=400, message=response_messages.ErrorInvalidJSON)
 
         # Verify all non-nullable fields are present only needs to be done on post
@@ -47,8 +48,9 @@ def validation(func):
 
         # Verify all of the request_data are valid model fields
         for key in request_data:
-            if key not in fields:
-                return response_json(response_messages.ErrorInvalidField.format(key, field_names))
+            if key not in fields.keys():
+                return response_json(status_code=400,
+                                     message=response_messages.ErrorInvalidField.format(key, field_names))
 
         # Verify all of the request_data is a valid type for the database
         for key, value in request_data.items():

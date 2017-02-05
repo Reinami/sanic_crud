@@ -1,4 +1,4 @@
-sanic_crud
+sanic_crud 
 =================================
 
 sanic_crud is a REST API framework for creating a CRUD (Create/Retrieve/Update/Delete) API using `Sanic <https://github.com/channelcat/sanic>`_ and `PeeWee <http://docs.peewee-orm.com/en/latest/>`_
@@ -51,7 +51,6 @@ Uploading to pypi (for my own sanity):
 TODO
 ----------
 
-* `Write tests <https://github.com/Typhon66/sanic_crud/issues/8>`_
 * `Get working with travis-ci <https://github.com/Typhon66/sanic_crud/issues/10>`_
 * `Add sanic_openapi/swagger support <https://github.com/Typhon66/sanic_crud/issues/11>`_
 * `Add support for custom routes per model <https://github.com/Typhon66/sanic_crud/issues/7>`_
