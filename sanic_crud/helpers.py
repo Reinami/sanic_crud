@@ -86,6 +86,7 @@ def collection_filter(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
         shortcuts = model.shortcuts
+        config = model.crud_config
 
         fields = shortcuts.fields
         field_names = shortcuts.get_field_names()
@@ -108,7 +109,7 @@ def collection_filter(func):
                 comparison = filter_parts[1]
 
             # Validate that a supported comparison is used
-            if comparison not in shortcuts.FILTER_OPTIONS:
+            if comparison not in config.FILTER_OPTIONS:
                 return response_json(status_code=400,
                                      message=response_messages.ErrorInvalidFilterOption.format(comparison, shortcuts.FILTER_OPTIONS))
 

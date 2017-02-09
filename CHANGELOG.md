@@ -1,13 +1,10 @@
 ## Version 0.1
 
+ - 0.1.9
+  - Fixing Pagination
+
  - 0.1.8
   - Fixing Single Resource
-
- - 0.1.73
-  - Fixing Collection resource
-  
- - 0.1.72
-  - Fixing imports
 
  - 0.1.6
   - Change Relative Imports
