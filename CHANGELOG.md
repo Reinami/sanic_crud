@@ -1,5 +1,8 @@
 ## Version 0.1
 
+ - 0.1.9
+  - Fixing Pagination
+
  - 0.1.8
   - Fixing Single Resource
 

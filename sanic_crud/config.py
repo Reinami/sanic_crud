@@ -38,7 +38,8 @@ class CrudConfig(object):
         'null': 'field is null',
         '=': 'field is equal to value',
         'in': 'field is in list',
-        'notin': 'field is not in list'
+        'notin': 'field is not in list',
+        'page': 'Page number for pagination'
     }
 
     response_messages = ResponseMessages()
