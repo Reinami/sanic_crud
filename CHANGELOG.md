@@ -1,5 +1,8 @@
 ## Version 0.1
 
+ - 0.1.8
+  - Fixing Single Resource
+
  - 0.1.73
   - Fixing Collection resource
 

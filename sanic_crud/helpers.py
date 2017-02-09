@@ -216,6 +216,7 @@ def convert_column_type(column_type):
 
     types = {
         'INTEGER': 'int',
+        'SERIAL': 'int',
         'VARCHAR': 'str'
     }
 
