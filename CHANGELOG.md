@@ -1,5 +1,8 @@
 ## Changelog
 
+ - 0.1.7
+  - Removing relative imports 
+  
  - 0.1.6
   - Changing relative imports
 
