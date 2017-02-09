@@ -1,5 +1,8 @@
 ## Version 0.1
 
+ - 0.1.10
+  - Fixing Pagination for real
+
  - 0.1.9
   - Fixing Pagination
 
