@@ -14,7 +14,5 @@ def generate_crud(app, model_array):
         SingleResource = type('SingleResource', (BaseResource,), {'model': model})
         CollectionResource = type('CollectionResource', (BaseCollectionResource,), {'model': model})
 
-        log.error(shortcuts.base_uri + '/<{}:{}>'.format(shortcuts.primary_key, shortcuts.primary_key_type))
-
         app.add_route(SingleResource.as_view(), shortcuts.base_uri + '/<{}:{}>'.format(shortcuts.primary_key, shortcuts.primary_key_type))
         app.add_route(CollectionResource.as_view(), shortcuts.base_uri)
