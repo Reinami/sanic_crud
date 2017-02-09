@@ -1,5 +1,5 @@
-from .crud_generation import generate_crud
-from .config import CrudConfig, ResponseMessages
+from sanic_crud.crud_generation import generate_crud
+from sanic_crud.config import CrudConfig, ResponseMessages
 
 __version__ = '0.1.72'
 

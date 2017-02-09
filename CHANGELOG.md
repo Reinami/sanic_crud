@@ -1,4 +1,10 @@
-## Version 0.1
+## Changelog
+
+ - 0.1.7
+  - Removing relative imports 
+  
+ - 0.1.6
+  - Changing relative imports
 
  - 0.1.5
   - Fixing docs formatting on PyPI
