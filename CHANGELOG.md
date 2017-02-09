@@ -1,5 +1,11 @@
 ## Version 0.1
 
+ - 0.1.72
+  - Fixing imports
+
+ - 0.1.6
+  - Change Relative Imports
+
  - 0.1.5
   - Fixing docs formatting on PyPI
 

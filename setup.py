@@ -2,13 +2,13 @@ from setuptools import setup
 
 setup(
     name='sanic_crud',
-    version='0.1.5',
+    version='0.1.72',
     url='https://github.com/Typhon66/sanic_crud',
     license='MIT',
     author='Typhon',
     author_email='typhonnge@gmail.com',
     description='A REST API framework for building CRUD APIs using Sanic and peewee',
-    packages=['sanic_crud'],
+    packages=['sanic_crud', 'sanic_crud.resources'],
     platforms='any',
     install_requires=[
         'peewee==2.8.5',
