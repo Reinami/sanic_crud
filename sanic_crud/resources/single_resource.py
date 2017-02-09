@@ -3,8 +3,8 @@ import traceback
 from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 
-from ..resources.base_resource import _BaseResource
-from ..helpers import response_json, get_model, validation
+from sanic_crud.resources.base_resource import _BaseResource
+from sanic_crud.helpers import response_json, get_model, validation
 
 
 # Resource for a single object
