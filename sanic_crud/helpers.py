@@ -104,6 +104,9 @@ def collection_filter(func):
             field = filter_parts[0]
             comparison = '='
 
+            if field == 'page':
+                continue
+
             # If the length is 2, then there is a filter component
             if len(filter_parts) == 2:
                 comparison = filter_parts[1]
