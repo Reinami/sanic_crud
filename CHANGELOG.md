@@ -5,7 +5,7 @@
 
  - 0.1.73
   - Fixing Collection resource
-
+  
  - 0.1.72
   - Fixing imports
 
