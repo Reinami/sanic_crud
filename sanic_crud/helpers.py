@@ -2,6 +2,7 @@ from datetime import datetime
 from sanic.response import json
 from sanic.log import log
 
+
 # Validates request data for a put or a post
 def validation(func):
     def wrapped(self, request, *args, **kwargs):
@@ -20,11 +21,6 @@ def validation(func):
             'bigint': {'min': -9223372036854775808, 'max': 9223372036854775807}
         }
 
-        # min/max length for fields
-        field_default_length = {
-            'string': {'min': 0, 'max': 255}
-        }
-
         # verify the request data is valid JSON
         try:
             request_data = request.json
@@ -32,14 +28,22 @@ def validation(func):
             return response_json(status_code=400, message=response_messages.ErrorInvalidJSON)
 
         # Verify all non-nullable fields are present only needs to be done on post
-        if request.method == 'POST':
-            for field in field_names:
-                field_obj = fields.get(field)
 
+        for field in field_names:
+            field_obj = fields.get(field)
+
+            if request.method == 'POST':
                 if not field_obj.null:
                     if field not in request.json or request.json.get(field) is None:
                         return response_json(status_code=400,
                                              message=response_messages.ErrorNonNullableFieldInsert.format(field, required_fields))
+            # verify field length
+            if field in request.json:
+                if hasattr(field_obj, 'max_length'):
+                    max_length = field_obj.max_length
+                    if len(request.json.get(field)) > max_length:
+                        return response_json(status_code=400,
+                                             message=response_messages.ErrorFieldOutOfRange.format(field, 0, max_length))
 
         # Verify the user is not trying to mess with the primary key
         if primary_key in request_data:
@@ -68,14 +72,6 @@ def validation(func):
                 if not min_size <= value <= max_size:
                     return response_json(status_code=400,
                                          message=response_messages.ErrorFieldOutOfRange.format(key, min_size, max_size))
-            # verify field length
-            if field_type in field_default_length:
-                min_length = field_default_length.get(field_type).get('min')
-                max_length = field_default_length.get(field_type).get('max')
-
-                if not min_length <= len(value) <= max_length:
-                    return response_json(status_code=400,
-                                         message=response_messages.ErrorFieldOutOfRange(key, min_length, max_length))
 
         return func(self, request, *args, **kwargs)
 
