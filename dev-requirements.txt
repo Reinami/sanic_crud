@@ -1,2 +1,4 @@
 aiohttp==1.2.0
 pytest==3.0.6
+peewee==2.8.5
+sanic==0.3.0
