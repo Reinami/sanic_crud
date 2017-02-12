@@ -1,5 +1,8 @@
 ## Version 0.1
 
+ - 0.1.11
+  - Validating String length properly
+  
  - 0.1.10
   - Fixing Pagination for real
 
