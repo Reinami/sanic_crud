@@ -1,5 +1,8 @@
 ## Version 0.1
 
+ - 0.2.0
+  - Moved request validation into the BaseResource class.
+  
  - 0.1.11
   - Validating String length properly
   

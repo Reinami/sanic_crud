@@ -4,19 +4,16 @@ from math import ceil
 from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 
-from ..resources.base_resource import _BaseResource
+from ..resources.base_resource import BaseResource
 from ..helpers import response_json, validation, collection_filter
 
 
 # Resource for multiple objects
-class BaseCollectionResource(_BaseResource):
-    model = None
-
+class BaseCollectionResource(BaseResource):
     @collection_filter
     async def get(self, request, **kwargs):
         try:
-            config = self.model.crud_config
-            response_messages = config.response_messages
+            response_messages = self.config.response_messages
 
             # Verify page is an int
             try:
@@ -31,8 +28,8 @@ class BaseCollectionResource(_BaseResource):
             results = []
             data = kwargs.get('filtered_results')
             total_records = data.count()
-            total_pages = ceil(total_records / config.COLLECTION_MAX_RESULTS_PER_PAGE)
-            data = data.paginate(page, config.COLLECTION_MAX_RESULTS_PER_PAGE)
+            total_pages = ceil(total_records / self.config.COLLECTION_MAX_RESULTS_PER_PAGE)
+            data = data.paginate(page, self.config.COLLECTION_MAX_RESULTS_PER_PAGE)
 
             for row in data:
                 results.append(model_to_dict(row, backrefs=include_foreign_keys))
@@ -49,7 +46,7 @@ class BaseCollectionResource(_BaseResource):
 
     @validation
     async def post(self, request):
-        response_messages = self.model.crud_config.response_messages
+        response_messages = self.config.response_messages
 
         try:
             result = self.model.create(**request.json)
@@ -60,4 +57,5 @@ class BaseCollectionResource(_BaseResource):
         except Exception as e:
             log.error(traceback.print_exc())
             return response_json(message=str(e),
-                                 status_code=500)
+                                 status_code=500
+                                )

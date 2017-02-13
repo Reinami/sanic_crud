@@ -13,7 +13,7 @@ def validation(func):
         field_names = shortcuts.get_field_names()
         primary_key = shortcuts.primary_key
         required_fields = shortcuts.required_fields
-        response_messages = self.model.crud_config.response_messages
+        response_messages = self.config.response_messages
 
         # min/max value size for fields
         field_default_size = {
@@ -58,7 +58,7 @@ def validation(func):
 
         # Verify all of the request_data is a valid type for the database
         for key, value in request_data.items():
-            field_type_invalid = _validate_field_type(model, fields.get(key), value)
+            field_type_invalid = _validate_field_type(response_messages, fields.get(key), value)
             field_type = fields.get(key).db_field
 
             if field_type_invalid:
@@ -159,9 +159,8 @@ def collection_filter(func):
 
 
 # Helper function, takes in a database field and an input value to make sure the input is the correct type for the db
-def _validate_field_type(model, field, value):
+def _validate_field_type(response_messages, field, value):
     expected_field_type = field.db_field
-    response_messages = model.crud_config.response_messages
 
     if expected_field_type in ['int', 'bool']:
         try:
@@ -207,17 +206,3 @@ def get_model(primary_key, model):
         return model.get(getattr(model, pk_field) == primary_key)
     except model.DoesNotExist:
         return {}
-
-
-# Returns python type from a get_column_type on a peewee field
-def convert_column_type(column_type):
-    column_type = column_type.replace(' ', '')
-    column_type = column_type.replace('AUTO_INCREMENT', '')
-
-    types = {
-        'INTEGER': 'int',
-        'SERIAL': 'int',
-        'VARCHAR': 'str'
-    }
-
-    return types.get(column_type, None)
