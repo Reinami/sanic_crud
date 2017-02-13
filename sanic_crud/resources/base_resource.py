@@ -6,6 +6,7 @@ class BaseResource(HTTPMethodView):
     model = None
 
     def validate_request(self, request, is_collection=False):
+
         valid_json = self._validate_json(request)
         if valid_json is not True:
             return valid_json
@@ -57,10 +58,11 @@ class BaseResource(HTTPMethodView):
 
     def _validate_json(self, request):
         try:
-            valid = request.json
+            valid = json.loads(request.json)
             return True
         except Exception:
-            return False
+            return self.response_json(status_code=400,
+                                      message=self.config.response_messages.ErrorInvalidJSON)
 
     def _validate_primary_key_immutable(self, request):
         if self.model.shortcuts.primary_key in request.json:
