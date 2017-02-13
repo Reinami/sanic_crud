@@ -6,17 +6,31 @@ from sanic.log import log
 class BaseResource(HTTPMethodView):
     model = None
 
-    def validate_request(self, request):
-        validations = []
-        validations.append(self._validate_primary_key_immutable(request))
-        validations.append(self._validate_field_types(request))
-        validations.append(self._validate_fields(request))
-        validations.append(self._validate_field_length(request))
-        validations.append(self._validate_field_size(request))
+    def validate_request(self, request, is_collection=False):
+        valid_json = self._validate_json(request)
+        if valid_json is not True:
+            return valid_json
 
-        for validation in validations:
-            if validation is not True:
-                return validation
+        valid_fields = self._validate_fields(request)
+        if valid_fields is not True:
+            return valid_fields
+
+        valid_types = self._validate_field_types(request)
+        if valid_types is not True:
+            return valid_types
+
+        if not is_collection:
+            valid_pk = self._validate_primary_key_immutable(request)
+            if valid_pk is not True:
+                return valid_pk
+
+            valid_length = self._validate_field_length(request)
+            if valid_length is not True:
+                return valid_length
+
+            valid_size = self._validate_field_size(request)
+            if valid_size is not True:
+                return valid_size
 
         return True
 
@@ -41,6 +55,13 @@ class BaseResource(HTTPMethodView):
             return self.model.get(getattr(self.model, pk_field) == pk)
         except self.model.DoesNotExist:
             return {}
+
+    def _validate_json(self, request):
+        try:
+            valid = request.json
+            return True
+        except Exception:
+            return False
 
     def _validate_primary_key_immutable(self, request):
         if self.model.shortcuts.primary_key in request.json:
@@ -92,7 +113,15 @@ class BaseResource(HTTPMethodView):
 
         for field, field_object in fields.items():
             if not field_object.null:
-                if request_data.get(field) is None or (request.method == 'POST' and field not in request_data):
+                send_error = False
+                if request.method == 'POST':
+                    if request_data.get(field) is None:
+                        send_error = True
+                else:
+                    if request_data.get(field) is None and field in request_data:
+                        send_error = True
+
+                if send_error:
                     return self.response_json(status_code=400,
                                               message=response_messages.ErrorNonNullableFieldInsert.format(field, required_fields))
 

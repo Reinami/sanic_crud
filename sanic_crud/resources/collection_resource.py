@@ -5,13 +5,18 @@ from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 
 from ..resources.base_resource import BaseResource
-from ..helpers import response_json, collection_filter
+from ..helpers import collection_filter
 
 
 # Resource for multiple objects
 class BaseCollectionResource(BaseResource):
     @collection_filter
     async def get(self, request, **kwargs):
+        valid_request = self.validate_request(request)
+
+        if valid_request is not True:
+            return valid_request
+
         try:
             response_messages = self.config.response_messages
 
@@ -19,8 +24,8 @@ class BaseCollectionResource(BaseResource):
             try:
                 page = int(request.args.get('page', 1))
             except ValueError:
-                return response_json(status_code=400,
-                                     message=response_messages.ErrorTypeInteger.format('page'))
+                return self.response_json(status_code=400,
+                                          message=response_messages.ErrorTypeInteger.format('page'))
 
             include_foreign_keys = True if 'foreign_keys' in request.args \
                                            and request.args['foreign_keys'][0] == 'true' else False
@@ -34,15 +39,16 @@ class BaseCollectionResource(BaseResource):
             for row in data:
                 results.append(model_to_dict(row, backrefs=include_foreign_keys))
 
-            return response_json(data=results,
-                                 status_code=200,
-                                 message=response_messages.SuccessOk,
-                                 page=page,
-                                 total_pages=total_pages)
+            return self.response_json(data=results,
+                                      status_code=200,
+                                      message=response_messages.SuccessOk,
+                                      page=page,
+                                      total_pages=total_pages)
         except Exception as e:
             log.error(traceback.print_exc())
-            return response_json(message=str(e),
-                                 status_code=500)
+            return self.response_json(message=str(e),
+                                      status_code=500
+                                      )
 
     async def post(self, request):
         valid_request = self.validate_request(request)
@@ -52,12 +58,12 @@ class BaseCollectionResource(BaseResource):
 
         try:
             result = self.model.create(**request.json)
-            return response_json(data=model_to_dict(result),
-                                 status_code=200,
-                                 message=self.config.response_messages.SuccessRowCreated.format(result.id)
-                                 )
+            return self.response_json(data=model_to_dict(result),
+                                      status_code=200,
+                                      message=self.config.response_messages.SuccessRowCreated.format(result.id)
+                                      )
         except Exception as e:
             log.error(traceback.print_exc())
-            return response_json(message=str(e),
-                                 status_code=500
-                                )
+            return self.response_json(message=str(e),
+                                      status_code=500
+                                      )

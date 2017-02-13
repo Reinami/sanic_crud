@@ -4,7 +4,6 @@ from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 
 from ..resources.base_resource import BaseResource
-from ..helpers import response_json
 
 
 # Resource for a single object
@@ -21,17 +20,17 @@ class BaseSingleResource(BaseResource):
             data = self.get_model(primary_key)
 
             if not data:
-                return response_json(data=data,
-                                     status_code=404,
-                                     message=response_messages.ErrorDoesNotExist.format(primary_key))
+                return self.response_json(data=data,
+                                          status_code=404,
+                                          message=response_messages.ErrorDoesNotExist.format(primary_key))
             else:
-                return response_json(data=model_to_dict(data, backrefs=include_foreign_keys),
-                                     status_code=200,
-                                     message=response_messages.SuccessOk)
+                return self.response_json(data=model_to_dict(data, backrefs=include_foreign_keys),
+                                          status_code=200,
+                                          message=response_messages.SuccessOk)
         except Exception as e:
             log.error(traceback.print_exc())
-            return response_json(message=str(e),
-                                 status_code=500)
+            return self.response_json(message=str(e),
+                                      status_code=500)
 
     async def put(self, request, **kwargs):
         valid_request = self.validate_request(request)
@@ -48,22 +47,22 @@ class BaseSingleResource(BaseResource):
             resource = self.get_model(primary_key)
 
             if not resource:
-                return response_json(data={},
-                                     status_code=404,
-                                     message=response_messages.ErrorDoesNotExist.format(primary_key))
+                return self.response_json(data={},
+                                          status_code=404,
+                                          message=response_messages.ErrorDoesNotExist.format(primary_key))
 
             for key, value in request_data:
                 setattr(resource, key, value)
 
             resource.save()
 
-            return response_json(data=model_to_dict(resource),
-                                 status_code=200,
-                                 message=response_messages.SuccessOk)
+            return self.response_json(data=model_to_dict(resource),
+                                      status_code=200,
+                                      message=response_messages.SuccessOk)
         except Exception as e:
             log.error(traceback.print_exc())
-            return response_json(message=str(e),
-                                 status_code=500)
+            return self.response_json(message=str(e),
+                                      status_code=500)
 
     async def delete(self, request, **kwargs):
         try:
@@ -74,14 +73,14 @@ class BaseSingleResource(BaseResource):
             resource = self.get_model(primary_key)
 
             if not resource:
-                return response_json(data={},
-                                     status_code=404,
-                                     message=response_messages.ErrorDoesNotExist.format(primary_key))
+                return self.response_json(data={},
+                                          status_code=404,
+                                          message=response_messages.ErrorDoesNotExist.format(primary_key))
 
             resource.delete_instance()
 
-            return response_json(status_code=200, message=response_messages.SuccessRowDeleted.format(primary_key))
+            return self.response_json(status_code=200, message=response_messages.SuccessRowDeleted.format(primary_key))
         except Exception as e:
             log.error(traceback.print_exc())
-            return response_json(message=str(e),
-                                 status_code=500)
+            return self.response_json(message=str(e),
+                                      status_code=500)

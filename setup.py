@@ -8,7 +8,7 @@ setup(
     author='Typhon',
     author_email='typhonnge@gmail.com',
     description='A REST API framework for building CRUD APIs using Sanic and peewee',
-    packages=['sanic_crud', 'sanic_crud.resources', 'database'],
+    packages=['sanic_crud', 'sanic_crud.resources'],
     platforms='any',
     install_requires=[
         'peewee==2.8.5',
