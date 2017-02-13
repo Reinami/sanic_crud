@@ -1,6 +1,5 @@
 from sanic.views import HTTPMethodView
 from sanic.response import json
-from sanic.log import log
 
 
 class BaseResource(HTTPMethodView):

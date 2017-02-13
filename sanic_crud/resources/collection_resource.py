@@ -5,7 +5,7 @@ from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 
 from ..resources.base_resource import BaseResource
-from ..helpers import collection_filter
+from .collection_filter import collection_filter
 
 
 # Resource for multiple objects
