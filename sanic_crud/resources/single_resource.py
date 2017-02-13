@@ -4,7 +4,7 @@ from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 
 from ..resources.base_resource import BaseResource
-from ..helpers import response_json, get_model, validation
+from ..helpers import response_json
 
 
 # Resource for a single object
@@ -33,8 +33,12 @@ class BaseSingleResource(BaseResource):
             return response_json(message=str(e),
                                  status_code=500)
 
-    @validation
     async def put(self, request, **kwargs):
+        valid_request = self.validate_request(request)
+
+        if valid_request is not True:
+            return valid_request
+
         try:
             shortcuts = self.model.shortcuts
             response_messages = self.config.response_messages

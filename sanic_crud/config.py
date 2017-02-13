@@ -4,6 +4,7 @@
 
 class ResponseMessages:
     # Errors
+    # TODO change these values to use the filed instead
     ErrorDoesNotExist = 'Resource with id \'{}\' does not exist'
     ErrorTypeInteger = 'Value \'{}\' must be an integer'
     ErrorTypeBoolean = 'Value \'{}\' must be a boolean: 0 or 1'
@@ -48,25 +49,13 @@ class CrudShortcuts(object):
     def __init__(self, model):
         self.table_name = model._meta.db_table
         self.fields = model._meta.fields
+        self.model = model
 
     @property
     def primary_key(self):
         for key, value in self.fields.items():
             if value.primary_key:
                 return key
-
-    @property
-    def base_uri(self):
-        return '/{}'.format(self.table_name)
-
-    @property
-    def required_fields(self):
-        required_fields = []
-        for field in self.get_field_names():
-            if not self.fields.get(field).null:
-                required_fields.append(field)
-
-        return required_fields
 
     @property
     def primary_key_type(self):
@@ -83,10 +72,25 @@ class CrudShortcuts(object):
 
         return types.get(column_type, None)
 
-    def get_field_names(self, exclude_primary_key=True):
-        field_names = list(self.fields.keys())
+    @property
+    def base_uri(self):
+        return '/{}'.format(self.table_name)
 
-        if exclude_primary_key:
-            field_names.remove(self.primary_key)
+    @property
+    def required_fields(self):
+        required_fields = []
+        for field, field_object in self.editable_fields.items():
+            if not field_object.null:
+                required_fields.append(field)
 
-        return field_names
+        return required_fields
+
+    @property
+    def editable_fields(self):
+        fields = {}
+        for key, value in self.model._meta.fields.items():
+            if self.primary_key == key:
+                continue
+
+            fields[key] = value
+        return fields

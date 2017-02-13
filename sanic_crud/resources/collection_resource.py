@@ -5,7 +5,7 @@ from playhouse.shortcuts import model_to_dict
 from sanic.log import log
 
 from ..resources.base_resource import BaseResource
-from ..helpers import response_json, validation, collection_filter
+from ..helpers import response_json, collection_filter
 
 
 # Resource for multiple objects
@@ -44,15 +44,17 @@ class BaseCollectionResource(BaseResource):
             return response_json(message=str(e),
                                  status_code=500)
 
-    @validation
     async def post(self, request):
-        response_messages = self.config.response_messages
+        valid_request = self.validate_request(request)
+
+        if valid_request is not True:
+            return valid_request
 
         try:
             result = self.model.create(**request.json)
             return response_json(data=model_to_dict(result),
                                  status_code=200,
-                                 message=response_messages.SuccessRowCreated.format(result.id)
+                                 message=self.config.response_messages.SuccessRowCreated.format(result.id)
                                  )
         except Exception as e:
             log.error(traceback.print_exc())
