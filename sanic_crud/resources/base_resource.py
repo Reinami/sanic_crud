@@ -5,11 +5,12 @@ from sanic.response import json
 class BaseResource(HTTPMethodView):
     model = None
 
-    def validate_request(self, request, is_collection=False):
+    def validate_request(self, request):
 
-        valid_json = self._validate_json(request)
-        if valid_json is not True:
-            return valid_json
+        if request.method in ['POST', 'PUT']:
+            valid_json = self._validate_json(request)
+            if valid_json is not True:
+                return valid_json
 
         valid_fields = self._validate_fields(request)
         if valid_fields is not True:
@@ -19,18 +20,17 @@ class BaseResource(HTTPMethodView):
         if valid_types is not True:
             return valid_types
 
-        if not is_collection:
-            valid_pk = self._validate_primary_key_immutable(request)
-            if valid_pk is not True:
-                return valid_pk
+        valid_pk = self._validate_primary_key_immutable(request)
+        if valid_pk is not True:
+            return valid_pk
 
-            valid_length = self._validate_field_length(request)
-            if valid_length is not True:
-                return valid_length
+        valid_length = self._validate_field_length(request)
+        if valid_length is not True:
+            return valid_length
 
-            valid_size = self._validate_field_size(request)
-            if valid_size is not True:
-                return valid_size
+        valid_size = self._validate_field_size(request)
+        if valid_size is not True:
+            return valid_size
 
         return True
 
@@ -58,7 +58,7 @@ class BaseResource(HTTPMethodView):
 
     def _validate_json(self, request):
         try:
-            valid = json.loads(request.json)
+            valid = request.json
             return True
         except Exception:
             return self.response_json(status_code=400,

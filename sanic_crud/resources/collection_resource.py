@@ -1,5 +1,6 @@
 import traceback
 from math import ceil
+import datetime
 
 from playhouse.shortcuts import model_to_dict
 from sanic.log import log
@@ -10,8 +11,10 @@ from ..resources.base_resource import BaseResource
 def collection_filter(func):
     def wrapped(self, request, *args, **kwargs):
         model = self.model
-        config = model.crud_config
-        response_messages = config.response_messages
+        shortcuts = model.shortcuts
+
+        fields = shortcuts.fields
+        response_messages = self.config.response_messages
 
         query = model.select()
 
@@ -33,9 +36,24 @@ def collection_filter(func):
                 comparison = filter_parts[1]
 
             # Validate that a supported comparison is used
-            if comparison not in config.FILTER_OPTIONS:
+            if comparison not in self.config.FILTER_OPTIONS:
                 return self.response_json(status_code=400,
-                                          message=response_messages.ErrorInvalidFilterOption.format(comparison, model.shortcuts.FILTER_OPTIONS))
+                                          message=response_messages.ErrorInvalidFilterOption.format(comparison, shortcuts.FILTER_OPTIONS))
+
+            # Validate that the field is part of the table
+            if field not in fields:
+                return self.response_json(status_code=400,
+                                          message=response_messages.ErrorInvalidField.format(key, fields.keys()))
+
+            # Validate that the value is the correct type
+            if comparison in ['in', 'notin']:
+                value = value.split(',')
+
+            if comparison != 'null':
+                for item in value:
+                    field_type_invalid = _validate_field_type(self, model, fields.get(field), item)
+                    if field_type_invalid:
+                        return field_type_invalid
 
             model_field = getattr(model, field)
 
@@ -68,15 +86,35 @@ def collection_filter(func):
     return wrapped
 
 
+# Helper function, takes in a database field and an input value to make sure the input is the correct type for the db
+def _validate_field_type(self, field, value):
+    expected_field_type = field.db_field
+    response_messages = self.model.crud_config.response_messages
+
+    if expected_field_type in ['int', 'bool']:
+        try:
+            int(value)
+        except (ValueError, TypeError):
+            return self.response_json(status_code=400,
+                                      message=response_messages.ErrorTypeInteger.format(value) if expected_field_type == 'int' else response_messages.ErrorTypeBoolean.format(value))
+
+    elif expected_field_type == 'datetime':
+        try:
+            int(value)
+        except Exception:
+            try:
+                datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+            except (ValueError, TypeError):
+                return self.response_json(status_code=400,
+                                          message=response_messages.ErrorTypeDatetime.format(value))
+
+    return False
+
+
 # Resource for multiple objects
 class BaseCollectionResource(BaseResource):
     @collection_filter
     async def get(self, request, **kwargs):
-        valid_request = self.validate_request(request)
-
-        if valid_request is not True:
-            return valid_request
-
         try:
             response_messages = self.config.response_messages
 
