@@ -100,7 +100,7 @@ class BaseResource(HTTPMethodView):
         for key in request_data:
             if key not in fields:
                 return self.response_json(status_code=400,
-                                          message=self.config.response_messages.ErrorInvalidField.format(key, [key for key in fields.keys()]))
+                                          message=self.config.response_messages.ErrorInvalidField.format(key, fields.keys()))
 
         return True
 
