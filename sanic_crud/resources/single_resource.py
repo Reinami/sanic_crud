@@ -14,6 +14,8 @@ class BaseSingleResource(BaseResource):
             response_messages = self.config.response_messages
 
             primary_key = kwargs.get(shortcuts.primary_key)
+            include_backrefs = True if 'backrefs' in request.args \
+                                       and request.args['backrefs'][0] == 'true' else False
             include_foreign_keys = True if 'foreign_keys' in request.args \
                                            and request.args['foreign_keys'][0] == 'true' else False
 
@@ -24,7 +26,7 @@ class BaseSingleResource(BaseResource):
                                           status_code=404,
                                           message=response_messages.ErrorDoesNotExist.format(primary_key))
             else:
-                return self.response_json(data=model_to_dict(data, backrefs=include_foreign_keys),
+                return self.response_json(data=model_to_dict(data, recurse=include_foreign_keys, backrefs=include_backrefs),
                                           status_code=200,
                                           message=response_messages.SuccessOk)
         except Exception as e:
