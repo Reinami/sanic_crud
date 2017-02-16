@@ -1,7 +1,12 @@
-## Version 0.1
+## Version 0.2
 
+ - 0.2.1
+  - Changed Foreign Keys to be backrefs and made recurse use foreign_keys 
+  
  - 0.2.0
   - Moved request validation into the BaseResource class.
+
+## Version 0.1
   
  - 0.1.11
   - Validating String length properly

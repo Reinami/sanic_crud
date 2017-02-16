@@ -21,7 +21,7 @@ def collection_filter(func):
         # Iterate over args and split the filters
         for key, value in request.args.items():
             # skip over include foreign_keys flag
-            if key == 'foreign_keys':
+            if key == 'foreign_keys' or key == 'backrefs':
                 continue
 
             filter_parts = key.split('__')
@@ -125,6 +125,8 @@ class BaseCollectionResource(BaseResource):
                 return self.response_json(status_code=400,
                                           message=response_messages.ErrorTypeInteger.format('page'))
 
+            include_backrefs = True if 'backrefs' in request.args \
+                                       and request.args['backrefs'][0] == 'true' else False
             include_foreign_keys = True if 'foreign_keys' in request.args \
                                            and request.args['foreign_keys'][0] == 'true' else False
 
@@ -135,7 +137,7 @@ class BaseCollectionResource(BaseResource):
             data = data.paginate(page, self.config.COLLECTION_MAX_RESULTS_PER_PAGE)
 
             for row in data:
-                results.append(model_to_dict(row, backrefs=include_foreign_keys))
+                results.append(model_to_dict(row, recurse=include_foreign_keys, backrefs=include_backrefs))
 
             return self.response_json(data=results,
                                       status_code=200,
