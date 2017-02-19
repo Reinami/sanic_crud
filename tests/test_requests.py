@@ -25,17 +25,35 @@ def test_get_collection_resource(app):
 
 
 def test_get_single_resource(app):
-    request, response = sanic_endpoint_test(app, uri='/job/1', method='get')
+    request, response = sanic_endpoint_test(app, uri='/person/1', method='get')
     expected_response = {'data': {
-                             'id': 1,
-                             'name': 'Space garbage man',
-                             'description': 'Collects garbage in space',
-                             'base_pay': 15
-                             },
-                         'status_code': 200,
-                         'message': 'OK'}
+        'id': 1,
+        'name': 'Sanic the Hedgehog',
+        'job': 1,
+        'email': 'gottagofeast@fast.com'},
+        'status_code': 200,
+        'message': "OK"}
 
     assert json.loads(response.text) == expected_response
+
+
+def test_get_foreign_keys(app):
+    request, response = sanic_endpoint_test(app, uri='/person/1?foreign_keys=true', method='get')
+    expected_response = {'data': {
+        'id': 1,
+        'name': 'Sanic the Hedgehog',
+        'job': {
+            'id': 1,
+            'name': 'Space garbage man',
+            'description': 'Collects garbage in space',
+            'base_pay': 15
+        },
+        'email': 'gottagofeast@fast.com'},
+        'status_code': 200,
+        'message': "OK"
+    }
+
+    assert expected_response == json.loads(response.text)
 
 
 # ------------------------------------------------------------ #

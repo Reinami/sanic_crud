@@ -14,7 +14,6 @@ class BaseModel(Model):
 
 
 class Job(BaseModel):
-    route_url = '/yee/yee/s'
     name = CharField()
     description = CharField()
     base_pay = IntegerField()
@@ -22,13 +21,17 @@ class Job(BaseModel):
 
 class Person(BaseModel):
     name = CharField()
-    job = ForeignKeyField(Job, related_name="person_job", null=True)
+    job = ForeignKeyField(Job, related_name="job", null=True)
     email = CharField()
     create_datetime = DateTimeField(default=datetime.datetime.now, null=True)
 
 # if there is an error DB already exists
 try:
     db.create_tables([Person, Job])
+    job = Job(name='Space garbage man', description='Collects garbage in space', base_pay=15)
+    person = Person(name='Sanic the Hedgehog', email='gottagofeast@fast.com', job=1)
+    job.save()
+    person.save()
 except Exception:
     pass
 

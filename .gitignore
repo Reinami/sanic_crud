@@ -8,4 +8,3 @@ dist/
 tests/test.db
 .tox
 secrets.txt
-dev_data.db
