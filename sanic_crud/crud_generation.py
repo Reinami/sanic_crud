@@ -6,10 +6,11 @@ from sanic.response import json
 
 
 def generate_crud(app, model_array):
-    model_list = []
+    # Setup Configuration
+    base_config = app.config.crud_config if hasattr(app.config, 'crud_config') else CrudConfig
     for model in model_array:
-        if not hasattr(app, 'crud_config'):
-            config = CrudConfig
+        if not hasattr(model, 'crud_config'):
+            config = base_config
         else:
             config = model.crud_config
 
@@ -17,15 +18,14 @@ def generate_crud(app, model_array):
         shortcuts = CrudShortcuts(model)
         model.shortcuts = shortcuts
 
+        # Generate Resources and Routes
         SingleResource = type('SingleResource', (BaseSingleResource,), {'model': model, 'config': config})
         CollectionResource = type('CollectionResource', (BaseCollectionResource,), {'model': model, 'config': config})
-
         app.add_route(SingleResource.as_view(), shortcuts.base_uri + '/<{}:{}>'.format(shortcuts.primary_key, shortcuts.primary_key_type))
         app.add_route(CollectionResource.as_view(), shortcuts.base_uri)
 
-        model_list.append(model)
-
-    app.add_route(_generate_base_route(model_list), '/', methods=['GET'])
+    # Add base route
+    app.add_route(_generate_base_route(model_array), '/', methods=['GET'])
 
 
 def _generate_base_route(model_array):

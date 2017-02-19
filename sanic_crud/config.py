@@ -4,24 +4,23 @@
 
 class ResponseMessages:
     # Errors
-    # TODO change these values to use the filed instead
-    ErrorDoesNotExist = 'Resource with id \'{}\' does not exist'
-    ErrorTypeInteger = 'Value \'{}\' must be an integer'
-    ErrorTypeBoolean = 'Value \'{}\' must be a boolean: 0 or 1'
-    ErrorTypeDatetime = 'Value \'{}\' must be a datetime: YYYY-mm-dd HH:MM:SS or integer'
-    ErrorTypeList = 'Value \'{}\' must be a comma separated list'
+    ErrorDoesNotExist = 'Resource with id \'{0}\' does not exist'
+    ErrorTypeInteger = 'Value \'{0}\' must be an integer'
+    ErrorTypeBoolean = 'Value \'{0}\' must be a boolean: 0 or 1'
+    ErrorTypeDatetime = 'Value \'{0}\' must be a datetime: YYYY-mm-dd HH:MM:SS or integer'
+    ErrorTypeList = 'Value \'{0}\' must be a comma separated list'
     ErrorPrimaryKeyUpdateInsert = 'Field: \'id\' cannot be inserted or modified, field is primary key'
-    ErrorInvalidField = 'Field: \'{}\' does not exist choices are {}'
-    ErrorNonNullableFieldInsert = 'Field: \'{}\' cannot be null, required fields are: {}'
+    ErrorInvalidField = 'Field: \'{0}\' does not exist choices are {1}'
+    ErrorNonNullableFieldInsert = 'Field: \'{0}\' cannot be null, required fields are: {1}'
     ErrorInvalidJSON = 'Invalid JSON input'
-    ErrorInvalidFilterOption = 'Invalid Filter Option: {}, valid options are {}'
-    ErrorFieldOutOfRange = 'Invalid range for field \'{}\', must be between {} and {}'
+    ErrorInvalidFilterOption = 'Invalid Filter Option: {0}, valid options are {1}'
+    ErrorFieldOutOfRange = 'Invalid range for field \'{0}\', must be between {1} and {2}'
 
     # Success
     SuccessOk = 'OK'
-    SuccessRowUpdated = 'Resource with id \'{}\' was updated!'
-    SuccessRowCreated = 'Resource with id \'{}\' was created!'
-    SuccessRowDeleted = 'Resource with id \'{}\' was deleted!'
+    SuccessRowUpdated = 'Resource with id \'{0}\' was updated!'
+    SuccessRowCreated = 'Resource with id \'{0}\' was created!'
+    SuccessRowDeleted = 'Resource with id \'{0}\' was deleted!'
 
 
 class CrudConfig(object):
