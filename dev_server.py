@@ -14,6 +14,7 @@ class BaseModel(Model):
 
 
 class Job(BaseModel):
+    route_url = '/yee/yee/s'
     name = CharField()
     description = CharField()
     base_pay = IntegerField()

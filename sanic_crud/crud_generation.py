@@ -1,7 +1,6 @@
 from .config import CrudConfig, CrudShortcuts
 from .resources import BaseSingleResource
 from .resources import BaseCollectionResource
-from sanic.log import log
 from sanic.response import json
 
 
@@ -19,10 +18,16 @@ def generate_crud(app, model_array):
         model.shortcuts = shortcuts
 
         # Generate Resources and Routes
+        base_uri = model.route_url if hasattr(model, 'route_url') else shortcuts.base_uri
         SingleResource = type('SingleResource', (BaseSingleResource,), {'model': model, 'config': config})
         CollectionResource = type('CollectionResource', (BaseCollectionResource,), {'model': model, 'config': config})
-        app.add_route(SingleResource.as_view(), shortcuts.base_uri + '/<{}:{}>'.format(shortcuts.primary_key, shortcuts.primary_key_type))
-        app.add_route(CollectionResource.as_view(), shortcuts.base_uri)
+        app.add_route(
+            SingleResource.as_view(),
+            base_uri + '/<{}:{}>'.format(shortcuts.primary_key, shortcuts.primary_key_type)
+        )
+        app.add_route(
+            CollectionResource.as_view(), base_uri
+        )
 
     # Add base route
     app.add_route(_generate_base_route(model_array), '/', methods=['GET'])
@@ -47,7 +52,7 @@ def _generate_base_route(model_array):
             })
 
         tables[table_name] = {
-            'route_url': '/{}'.format(table_name),
+            'route_url': model.route_url if hasattr(model, 'route_url') else '/{}'.format(table_name),
             'fields': fields
         }
 
