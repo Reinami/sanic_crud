@@ -12,12 +12,16 @@ class BaseSingleResource(BaseResource):
         try:
             shortcuts = self.model.shortcuts
             response_messages = self.config.response_messages
-
             primary_key = kwargs.get(shortcuts.primary_key)
-            include_backrefs = True if 'backrefs' in request.args \
-                                       and request.args['backrefs'][0] == 'true' else False
-            include_foreign_keys = True if 'foreign_keys' in request.args \
-                                           and request.args['foreign_keys'][0] == 'true' else False
+
+            include_backrefs = False
+            include_foreign_keys = False
+
+            if 'backrefs' in request.args and request.args['backrefs'][0] == 'true':
+                include_backrefs = True
+                include_foreign_keys = True
+            elif 'foreign_keys' in request.args and request.args['foreign_keys'][0] == 'true':
+                include_foreign_keys = True
 
             data = self.get_model(primary_key)
 

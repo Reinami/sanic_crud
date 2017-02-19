@@ -56,6 +56,27 @@ def test_get_foreign_keys(app):
     assert expected_response == json.loads(response.text)
 
 
+def test_get_backrefs(app):
+    request, response = sanic_endpoint_test(app, uri='/job/1?backrefs=true', method='get')
+    expected_repsonse = {
+        'data': {
+            'id': 1,
+            'name': "Space garbage man",
+            'description': "Collects garbage in space",
+            'base_pay': 15,
+            'person_job': [{
+                'id': 1,
+                'name': "Sanic the Hedgehog",
+                'email': "gottagofeast@fast.com"
+            }]
+        },
+        'status_code': 200,
+        'message': "OK"
+        }
+
+    assert expected_repsonse == json.loads(response.text)
+
+
 # ------------------------------------------------------------ #
 #  POST
 # ------------------------------------------------------------ #
