@@ -22,17 +22,23 @@ class BaseSingleResource(BaseResource):
             data = self.get_model(primary_key)
 
             if not data:
-                return self.response_json(data=data,
-                                          status_code=404,
-                                          message=response_messages.ErrorDoesNotExist.format(primary_key))
+                return self.response_json(
+                    data=data,
+                    status_code=404,
+                    message=response_messages.ErrorDoesNotExist.format(primary_key)
+                )
             else:
-                return self.response_json(data=model_to_dict(data, recurse=include_foreign_keys, backrefs=include_backrefs),
-                                          status_code=200,
-                                          message=response_messages.SuccessOk)
+                return self.response_json(
+                    data=model_to_dict(data, recurse=include_foreign_keys, backrefs=include_backrefs),
+                    status_code=200,
+                    message=response_messages.SuccessOk
+                )
         except Exception as e:
             log.error(traceback.print_exc())
-            return self.response_json(message=str(e),
-                                      status_code=500)
+            return self.response_json(
+                message=str(e),
+                status_code=500
+            )
 
     async def put(self, request, **kwargs):
         valid_request = self.validate_request(request)
@@ -49,22 +55,28 @@ class BaseSingleResource(BaseResource):
             resource = self.get_model(primary_key)
 
             if not resource:
-                return self.response_json(data={},
-                                          status_code=404,
-                                          message=response_messages.ErrorDoesNotExist.format(primary_key))
+                return self.response_json(
+                    data={},
+                    status_code=404,
+                    message=response_messages.ErrorDoesNotExist.format(primary_key)
+                )
 
             for key, value in request_data:
                 setattr(resource, key, value)
 
             resource.save()
 
-            return self.response_json(data=model_to_dict(resource),
-                                      status_code=200,
-                                      message=response_messages.SuccessOk)
+            return self.response_json(
+                data=model_to_dict(resource),
+                status_code=200,
+                message=response_messages.SuccessOk
+            )
         except Exception as e:
             log.error(traceback.print_exc())
-            return self.response_json(message=str(e),
-                                      status_code=500)
+            return self.response_json(
+                message=str(e),
+                status_code=500
+            )
 
     async def delete(self, request, **kwargs):
         try:
@@ -75,14 +87,21 @@ class BaseSingleResource(BaseResource):
             resource = self.get_model(primary_key)
 
             if not resource:
-                return self.response_json(data={},
-                                          status_code=404,
-                                          message=response_messages.ErrorDoesNotExist.format(primary_key))
+                return self.response_json(
+                    data={},
+                    status_code=404,
+                    message=response_messages.ErrorDoesNotExist.format(primary_key)
+                )
 
             resource.delete_instance()
 
-            return self.response_json(status_code=200, message=response_messages.SuccessRowDeleted.format(primary_key))
+            return self.response_json(
+                status_code=200,
+                message=response_messages.SuccessRowDeleted.format(primary_key)
+            )
         except Exception as e:
             log.error(traceback.print_exc())
-            return self.response_json(message=str(e),
-                                      status_code=500)
+            return self.response_json(
+                message=str(e),
+                status_code=500
+            )
