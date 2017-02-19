@@ -48,7 +48,6 @@ class CrudConfig(object):
 class CrudShortcuts(object):
     def __init__(self, model):
         self.table_name = model._meta.db_table
-        self.fields = model._meta.fields
         self.model = model
 
     @property
@@ -93,4 +92,12 @@ class CrudShortcuts(object):
                 continue
 
             fields[key] = value
+        return fields
+
+    @property
+    def fields(self):
+        fields = {}
+        for key, value in self.model._meta.fields.items():
+            fields[key] = value
+
         return fields
