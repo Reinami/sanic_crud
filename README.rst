@@ -55,6 +55,4 @@ Documentation can be found in the ``docs`` directory.
 TODO
 ----
 
-* `Add sanic_openapi/swagger support <https://github.com/Typhon66/sanic_crud/issues/11>`_
-* `Add support for custom routes per model <https://github.com/Typhon66/sanic_crud/issues/7>`_
-* `Make int/string length validation better <https://github.com/Typhon66/sanic_crud/issues/5>`_
+* `See Issues <https://github.com/Typhon66/sanic_crud/issues>`_
