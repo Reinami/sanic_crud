@@ -1,12 +1,16 @@
 ## Version 0.2
 
+ - 0.2.3
+  - Fixed bugs with backrefs vs foreign keys (now mutually exclusive)
+  - Fixed bug with collection filter querying
+  
  - 0.2.2
   - Made base config available on app level
   - Wrote more tests
   - Added base route '/' that gives info about the API
   - Added custom route urls
   
-  - 0.2.1
+ - 0.2.1
   - Changed Foreign Keys to be backrefs and made recurse use foreign_keys 
   
  - 0.2.0
