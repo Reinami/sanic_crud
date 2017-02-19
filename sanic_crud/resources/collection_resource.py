@@ -21,15 +21,12 @@ def collection_filter(func):
         # Iterate over args and split the filters
         for key, value in request.args.items():
             # skip over include foreign_keys flag
-            if key == 'foreign_keys' or key == 'backrefs':
+            if key == 'foreign_keys' or key == 'backrefs' or key == 'page':
                 continue
 
             filter_parts = key.split('__')
             field = filter_parts[0]
             comparison = '='
-
-            if field == 'page':
-                continue
 
             # If the length is 2, then there is a filter component
             if len(filter_parts) == 2:
@@ -48,10 +45,12 @@ def collection_filter(func):
             # Validate that the value is the correct type
             if comparison in ['in', 'notin']:
                 value = value.split(',')
+            else:
+                value = [value]
 
             if comparison != 'null':
                 for item in value:
-                    field_type_invalid = _validate_field_type(self, model, fields.get(field), item)
+                    field_type_invalid = _validate_field_type(self, fields.get(field), item)
                     if field_type_invalid:
                         return field_type_invalid
 
@@ -89,7 +88,7 @@ def collection_filter(func):
 # Helper function, takes in a database field and an input value to make sure the input is the correct type for the db
 def _validate_field_type(self, field, value):
     expected_field_type = field.db_field
-    response_messages = self.model.crud_config.response_messages
+    response_messages = self.config.response_messages
 
     if expected_field_type in ['int', 'bool']:
         try:
@@ -103,7 +102,7 @@ def _validate_field_type(self, field, value):
             int(value)
         except Exception:
             try:
-                datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
+                datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
             except (ValueError, TypeError):
                 return self.response_json(status_code=400,
                                           message=response_messages.ErrorTypeDatetime.format(value))
@@ -125,10 +124,14 @@ class BaseCollectionResource(BaseResource):
                 return self.response_json(status_code=400,
                                           message=response_messages.ErrorTypeInteger.format('page'))
 
-            include_backrefs = True if 'backrefs' in request.args \
-                                       and request.args['backrefs'][0] == 'true' else False
-            include_foreign_keys = True if 'foreign_keys' in request.args \
-                                           and request.args['foreign_keys'][0] == 'true' else False
+            include_backrefs = False
+            include_foreign_keys = False
+
+            if 'backrefs' in request.args and request.args['backrefs'][0] == 'true':
+                include_backrefs = True
+                include_foreign_keys = True
+            elif 'foreign_keys' in request.args and request.args['foreign_keys'][0] == 'true':
+                include_foreign_keys = True
 
             results = []
             data = kwargs.get('filtered_results')

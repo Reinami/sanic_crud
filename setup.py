@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='sanic_crud',
-    version='0.2.2',
+    version='0.2.3',
     url='https://github.com/Typhon66/sanic_crud',
     license='MIT',
     author='Typhon',

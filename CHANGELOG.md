@@ -1,5 +1,9 @@
 ## Version 0.2
 
+ - 0.2.3
+  - Fixed bugs with backrefs vs foreign keys (now mutually exclusive)
+  - Fixed bug with collection filter querying
+  
  - 0.2.2
   - Made base config available on app level
   - Wrote more tests
