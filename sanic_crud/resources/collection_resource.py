@@ -27,7 +27,7 @@ def collection_filter(func):
             filter_parts = key.split('__')
             field = filter_parts[0]
             comparison = '='
-            value = value[0]  # Value comes in as an array with a single argument? TODO: Re-evaluate this
+            value = value[0]  # Value comes in as an array with a single argument? TODO: Re-evaluate this!
 
             # If the length is 2, then there is a filter component
             if len(filter_parts) == 2:
