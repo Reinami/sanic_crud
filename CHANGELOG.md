@@ -1,5 +1,8 @@
 ## Version 0.2
 
+ - 0.2.4
+  - Fixed another bug with collection filter querying
+
  - 0.2.3
   - Fixed bugs with backrefs vs foreign keys (now mutually exclusive)
   - Fixed bug with collection filter querying
