@@ -27,6 +27,7 @@ def collection_filter(func):
             filter_parts = key.split('__')
             field = filter_parts[0]
             comparison = '='
+            value = value[0]  # Value comes in as an array with a single argument? TODO: Re-evaluate this
 
             # If the length is 2, then there is a filter component
             if len(filter_parts) == 2:
@@ -42,6 +43,7 @@ def collection_filter(func):
                 return self.response_json(status_code=400,
                                           message=response_messages.ErrorInvalidField.format(key, fields.keys()))
 
+            log.error(value)
             # Validate that the value is the correct type
             if comparison in ['in', 'notin']:
                 value = value.split(',')
