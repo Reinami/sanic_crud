@@ -1,8 +1,7 @@
 from setuptools import setup
-
 setup(
     name='sanic_crud',
-    version='0.2.4',
+    version='0.5.2',
     url='https://github.com/Typhon66/sanic_crud',
     license='MIT',
     author='Typhon',
@@ -11,8 +10,8 @@ setup(
     packages=['sanic_crud', 'sanic_crud.resources'],
     platforms='any',
     install_requires=[
-        'peewee==2.8.5',
-        'sanic==0.3.0'
+        'peewee==2.9.2',
+        'sanic==0.5.2'
     ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
