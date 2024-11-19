@@ -1,4 +1,4 @@
-## ⇁  sanic_crud
+## sanic_crud
 This is a deprecated if anyone has a fork they want i can add here, but for me personally this is not a project that i have the time for, nor have for a while now. But i wanted to make it officialy for everyone.
 
 
