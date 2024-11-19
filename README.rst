@@ -4,9 +4,6 @@ sanic_crud
 This is a deprecated if anyone has a fork they want i can add here, but for me personally this is not a project that i have the time for, nor have for a while now. But i wanted to make it officialy for everyone.
 
 
-sanic_crud 
-=================================
-
 |Build Status|   |PyPI|   |PyPI version|
 
 sanic_crud is a REST API framework for creating a CRUD (Create/Retrieve/Update/Delete) API using `Sanic <https://github.com/channelcat/sanic>`_ and `PeeWee <http://docs.peewee-orm.com/en/latest/>`_
