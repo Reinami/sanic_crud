@@ -12,7 +12,7 @@ setup(
     platforms='any',
     install_requires=[
         'peewee==2.8.5',
-        'sanic==0.3.0'
+        'sanic==20.12.7'
     ],
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
